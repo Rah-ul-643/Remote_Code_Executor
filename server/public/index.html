@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body>
+        <h1 class="text-center text-4xl m-12 font-bold">Online <span id="language"></span> Compiler</h1>
+        <div class="flex items-center m-4">
+            <h1 class="text-3xl font-bold mx-6">Language:</h1>
+            <form >
+                
+                <input type="radio" name="language" onclick="setLanguage('cpp')"  value="cpp">
+                <label for="cpp">C++</label>
+
+                <input type="radio" name="language" onclick="setLanguage('java')" value="java">
+                <label for="java">Java</label>
+
+                <input type="radio" name="language" onclick="setLanguage('python')" checked value="python">
+                <label for="python">Python</label>
+
+                <input type="radio" name="language" onclick="setLanguage('js')" value="js">
+                <label for="js">JavaScript</label>
+
+            </form>
+        </div>
+           
+        <div class="flex fixed justify-evenly h-3/4 w-full">
+            <form action="/compileCode" method="post" id="form" class="m-4 flex flex-col items-center w-2/3">
+                <h2 class="text-left w-full text-xl font-semibold m-2">Your code goes here:</h2>
+                <textarea name="codeInput" id="codeInputSection" rows="15"
+                class=" border-2 p-8 text-xl h-full w-full focus:outline-orange-500 border-black"></textarea>
+    
+                <button type="submit" class="w-fit m-4 bg-green-600 p-2 border-black border-2 font-bold h-12 text-white text-xl rounded-md">Run</button>
+
+            </form>
+            <div class=" relative h-11/12 m-4 w-1/2 border-black border-2">
+                <h1 class="text-3xl font-bold text-center underline">Output</h1>
+                <p id="output" class="p-8 text-2xl"></p>
+            </div>
+        </div>
+        
+
+        <script src="index.js" async defer></script>
+    </body>
+</html>
