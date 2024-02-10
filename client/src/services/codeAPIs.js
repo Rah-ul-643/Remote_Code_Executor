@@ -6,11 +6,13 @@ const {
     COMPILE_API
 } = endpoints
 
-export const compileCode = async (code, input) => {
+export const compileCode = async (code,input,language) => {
     const toastId = toast.loading("Compiling...");
+    let output="";
     try {
         const response = await apiConnector("POST", COMPILE_API, {
             code,
+            language,
             input
         }).catch(error => {
             console.error("apiConnector failed:", error);
@@ -18,10 +20,7 @@ export const compileCode = async (code, input) => {
         });
 
         console.log("COMPILE API RESPONSE :", response);
-        if (!response.data.success) {
-            const errorMessage = response.error ? response.error.message : "Unknown error";
-            throw new Error(errorMessage);
-        }
+        output = response.data;
 
         toast.success("Compiled successfully");
         return response.data;
@@ -30,6 +29,9 @@ export const compileCode = async (code, input) => {
         console.log("COMPILE API FAILED:", error);
         toast.error("Failed to compile");
     }
-    toast.dismiss(toastId);
-    return null;
+    finally{
+        toast.dismiss(toastId);
+    }
+    
+    return output;
 }

@@ -58,12 +58,17 @@ display: flex;
 
 const FileInput = styled.input``;
 
-const Bar = ({ setFormData }) => {
+const Bar = ({ setFormData, formData }) => {
   const [selectedLanguage, setSelectedLanguage] = useState("default");
 
 
-  const handleLanguageChange = (event) => {
-    setSelectedLanguage(event.target.value);
+  const handleLanguageChange = (e) => {
+    setSelectedLanguage(e.target.value);
+    setFormData({
+      ...formData,
+      language: e.target.value
+    })
+    console.log(formData.language);
   };
   const resetHandler = (e) => {
     e.preventDefault();
@@ -97,10 +102,10 @@ const Bar = ({ setFormData }) => {
         <BarItem>
           <Language value={selectedLanguage} onChange={handleLanguageChange}>
             <LanguageOption value="default" disabled hidden>Choose Language</LanguageOption>
-            <LanguageOption value="option1">Java</LanguageOption>
-            <LanguageOption value="option2">Python</LanguageOption>
-            <LanguageOption value="option3">C++</LanguageOption>
-            <LanguageOption value="option4">C</LanguageOption>
+            <LanguageOption value="java">Java</LanguageOption>
+            <LanguageOption value="python">Python</LanguageOption>
+            <LanguageOption value="cpp">C++</LanguageOption>
+            <LanguageOption value="c">C</LanguageOption>
           </Language>
 
         </BarItem>

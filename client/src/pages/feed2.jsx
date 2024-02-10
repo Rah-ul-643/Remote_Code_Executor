@@ -122,6 +122,7 @@ const Feed = () => {
   const [formData, setFormData] = useState({
     code: "",
     input: "",
+    language:"",
     output: "",
   });
 
@@ -137,7 +138,11 @@ const Feed = () => {
     console.log(formData);
     try{
       console.log("Compiling code...");
-      compileCode(formData);
+      const compiledOutput=await compileCode(formData.code,formData.input,formData.language);
+      setFormData({
+        ...formData,
+        output: compiledOutput
+      });
     }
     catch(error){
       console.log("Error in compiling code",error);
@@ -153,7 +158,7 @@ const Feed = () => {
     {/* Remove this loading video  */}
     {/* <Loading onEnded={handleVideoEnded} display={videoDisplay} /> */}
     <Container backgroundImage="https://i.ibb.co/4Z98Ms2/try.png">
-      <Bar setFormData={setFormData} />
+      <Bar setFormData={setFormData} formData={formData}/>
       <Wrapper>
         <CodeContainer>
           <InputCode placeholder="#CODE YOUR DISH HERE!" value={formData.code} name="code" onChange={changeHandler}></InputCode>
