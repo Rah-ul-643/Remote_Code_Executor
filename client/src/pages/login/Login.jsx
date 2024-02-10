@@ -1,16 +1,37 @@
-
-
 import "./login.css";
+import { useState } from "react";
+import { login } from "../../services/authAPIs";
 
 const Login=()=>{
+  const [formData,setFormData] = useState({
+    email:"",
+    password:"",
+  });
+  const changeHandler = (e) => {
+    setFormData({
+        ...formData,
+        [e.target.name]: e.target.value
+    }
+    );
+  }
+  const submitHandler = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    try{
+        login(formData);
+    }
+    catch(error){
+        console.log("Error in login",error);
+    }
+  }
   return (
     <div className="login">
       <span className="loginTitle">Login</span>
-      <form className="loginForm" >
-        <label>Username</label>
-        <input className="loginInput" type="text" placeholder="Enter your email..." />
+      <form className="loginForm" onSubmit={submitHandler}>
+        <label>Email</label>
+        <input className="loginInput" name="email" onChange={changeHandler} value={formData.email} type="text" placeholder="Enter your email..." />
         <label>Password</label>
-        <input className="loginInput" type="password" placeholder="Enter your password..."  />
+        <input className="loginInput" name="password" onChange={changeHandler} value={formData.password} type="password" placeholder="Enter your password..."  />
         <button className="loginButton" type="submit"  >Login</button>
       </form>
     </div>

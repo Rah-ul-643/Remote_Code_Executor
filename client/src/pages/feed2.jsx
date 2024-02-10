@@ -2,8 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import Loading from "./loading";
-import {useState} from "react";
+import { useState } from "react";
 import Bar from "./../components/feedbar";
+import { compileCode } from "../services/codeAPIs";
 
 const Container = styled.div`
   background-image: url(${(props) => props.backgroundImage});
@@ -70,14 +71,14 @@ const CodeContainer = styled.div`
 
 `;
 
-const ButtonContainer=styled.div`
+const ButtonContainer = styled.div`
 background-color:transparent;
 height:50px;
 width:100%;
 bottom:0;
 display:flex;
 `;
-const InputCode=styled.textarea`
+const InputCode = styled.textarea`
 height:90%;
 width:90%;
 background-color:transparent;
@@ -92,17 +93,17 @@ outline: none;
 
 `;
 
-const InputArea=styled.textarea`background-color:transparent;height:90%;
+const InputArea = styled.textarea`background-color:transparent;height:90%;
 width:90%;border:0;
 color:white;
 outline: none;
 `;
-const OutputArea=styled.textarea`background-color:transparent;height:90%;
+const OutputArea = styled.textarea`background-color:transparent;height:90%;
 width:90%;border:0;
 color:white;
 outline: none;
 `;
-const IconContainer=styled.div`
+const IconContainer = styled.div`
 align-self: flex-end;
 margin-left: auto;
 cursor:pointer;
@@ -112,42 +113,67 @@ transition: ease 0.5s; /* corrected transition property */
   transform: scale(1.2);
 }
 `;
-const Main=styled.div``;
+const Main = styled.div``;
 
 const Feed = () => {
 
-  const [videoDisplay,setVideoDisplay]=useState("flex");
-  const [codeDisplay,setCodeDisplay]=useState("none");
+  const [videoDisplay, setVideoDisplay] = useState("flex");
+  const [codeDisplay, setCodeDisplay] = useState("none");
+  const [formData, setFormData] = useState({
+    code: "",
+    input: "",
+    output: "",
+  });
+
+  const changeHandler = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    }
+    );
+  }
+  const submitHandler=async(e)=>{
+    e.preventDefault();
+    console.log(formData);
+    try{
+      console.log("Compiling code...");
+      compileCode(formData);
+    }
+    catch(error){
+      console.log("Error in compiling code",error);
+    }
+  }
 
 
-    const handleVideoEnded = () => {
-      setVideoDisplay("none");
-      setCodeDisplay("flex");
-    };
+  const handleVideoEnded = () => {
+    setVideoDisplay("none");
+    setCodeDisplay("flex");
+  };
   return (<Main>
-    <Loading    onEnded={handleVideoEnded}  display={videoDisplay}/>
-    <Container backgroundImage="https://i.ibb.co/4Z98Ms2/try.png" display={codeDisplay}>
-    <Bar/>
+    {/* Remove this loading video  */}
+    {/* <Loading onEnded={handleVideoEnded} display={videoDisplay} /> */}
+    <Container backgroundImage="https://i.ibb.co/4Z98Ms2/try.png">
+      <Bar setFormData={setFormData} />
       <Wrapper>
         <CodeContainer>
-                <InputCode placeholder="#CODE YOUR DISH HERE!"></InputCode>
-                <ButtonContainer>
-                <IconContainer> <PlayCircleIcon sx={{ fontSize: 55 }}/></IconContainer>
-                 </ButtonContainer>
+          <InputCode placeholder="#CODE YOUR DISH HERE!" value={formData.code} name="code" onChange={changeHandler}></InputCode>
+          <ButtonContainer>
+            <IconContainer> <button onClick={submitHandler}><PlayCircleIcon sx={{ fontSize: 55 }}/></button> </IconContainer>
+          </ButtonContainer>
         </CodeContainer>
 
 
         <IOContainer>
-                  <InputContainer>
-                  <InputArea placeholder="INPUT"></InputArea>
-                  </InputContainer>
-                  <OutputContainer>
-                  <OutputArea placeholder="OUTPUT"></OutputArea>
-                  </OutputContainer>
+          <InputContainer>
+            <InputArea placeholder="INPUT" value={formData.input} name="input" onChange={changeHandler}></InputArea>
+          </InputContainer>
+          <OutputContainer>
+            <OutputArea placeholder="OUTPUT" value={formData.output} name="output" onChange={changeHandler}></OutputArea>
+          </OutputContainer>
         </IOContainer>
       </Wrapper>
     </Container>
-    </Main>
+  </Main>
   );
 };
 

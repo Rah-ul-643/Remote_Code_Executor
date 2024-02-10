@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
-import {useState} from "react";
+import { useState } from "react";
 
 const LanguageOption = styled.option`
 position: absolute;
@@ -49,47 +49,59 @@ const BarItem = styled.div`
 text-align: center;
 font-family:'Montaga serif';
 `;
-const IconContainer=styled.div`
+const IconContainer = styled.div`
 display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 8px;
 `;
 
-const FileInput=styled.input``;
+const FileInput = styled.input``;
 
-const Bar = () => {
+const Bar = ({ setFormData }) => {
   const [selectedLanguage, setSelectedLanguage] = useState("default");
 
 
-    const handleLanguageChange = (event) => {
-      setSelectedLanguage(event.target.value);
-    };
+  const handleLanguageChange = (event) => {
+    setSelectedLanguage(event.target.value);
+  };
+  const resetHandler = (e) => {
+    e.preventDefault();
+    setFormData({
+      input: "",
+      output: "",
+      code: "",
+    });
+  }
   return (
     <Container>
       <CodeFeatures>
         <BarItem>
-        <IconContainer>
-<RestartAltIcon/>
-        Reset
-        </IconContainer></BarItem>
+          <IconContainer>
+
+            <button onClick={resetHandler}>
+              <RestartAltIcon />
+              Reset
+            </button>
+
+          </IconContainer></BarItem>
 
         <BarItem>
-        <IconContainer>
-        <ArrowCircleUpIcon/>
-        <FileInput
-        type="file"/
-      >
-        </IconContainer>
+          <IconContainer>
+            <ArrowCircleUpIcon />
+            <FileInput
+              type="file" /
+            >
+          </IconContainer>
         </BarItem>
         <BarItem>
-        <Language value={selectedLanguage} onChange={handleLanguageChange}>
-             <LanguageOption value="default" disabled hidden>Choose Language</LanguageOption>
-             <LanguageOption value="option1">Java</LanguageOption>
-             <LanguageOption value="option2">Python</LanguageOption>
-             <LanguageOption value="option3">C++</LanguageOption>
-             <LanguageOption value="option4">C</LanguageOption>
-           </Language>
+          <Language value={selectedLanguage} onChange={handleLanguageChange}>
+            <LanguageOption value="default" disabled hidden>Choose Language</LanguageOption>
+            <LanguageOption value="option1">Java</LanguageOption>
+            <LanguageOption value="option2">Python</LanguageOption>
+            <LanguageOption value="option3">C++</LanguageOption>
+            <LanguageOption value="option4">C</LanguageOption>
+          </Language>
 
         </BarItem>
       </CodeFeatures>

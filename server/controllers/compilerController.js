@@ -3,7 +3,7 @@ const compileCppCode = require("../compilers/cppCompiler");
 const compileJavaCode = require("../compilers/javaCompiler");
 const executePythonCode = require("../compilers/pythonCompiler");
 
-compileCode= (req,res)=>{
+const compileCode= (req,res)=>{
 
     const language=req.body.language;                       // to be received from req as input. 
     const code= req.body.code;
