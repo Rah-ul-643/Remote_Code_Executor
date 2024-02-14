@@ -1,13 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import Loading from "./loading";
 import { useState } from "react";
 import Bar from "./../components/feedbar";
 import { compileCode } from "../services/codeAPIs";
 
 const Container = styled.div`
-  background-image: url(${(props) => props.backgroundImage});
+background-color:#21222D;
   width: 100vw;
   height: 100vh;
     display: ${(props) => props.display};
@@ -20,29 +19,27 @@ const Wrapper = styled.div`
   align-items: center;
   width: 95%;
   height: 90%;
-  gap: 30px;
+  gap: 10vw;
    margin-left: 30px;
 `;
 
 const InputContainer = styled.div`
-background-color: transparent;
+  background-color:#171821;
   width: 80%;
   padding: 20px;
   height: 40%;
-  border:1px solid white;
-  border-radius:10px;
+  border-radius:5px;
   color:white;
     backdrop-filter: blur(5px);
 
 `;
 
 const OutputContainer = styled.div`
-background-color: transparent;
+  background-color:#171821;
   width: 80%;
   padding: 20px;
   height: 40%;
-  border:0.1px solid white;
-  border-radius:10px;
+  border-radius:5px;
   color:white;
     backdrop-filter: blur(5px);
 `;
@@ -59,14 +56,12 @@ const IOContainer = styled.div`
 
 const CodeContainer = styled.div`
   display: flex;
-  flex: 1.5;
-  background-color: transparent;
+  flex: 1.2;
+  background-color:#171821;
   padding: 20px;
   height: 65%;
-  border: 0.1px solid white;
-  border-radius: 10px;
+  border-radius: 5px;
   color: white;
-  backdrop-filter: blur(5px);
   flex-direction: column;
 
 `;
@@ -98,7 +93,9 @@ width:90%;border:0;
 color:white;
 outline: none;
 `;
-const OutputArea = styled.textarea`background-color:transparent;height:90%;
+const OutputArea = styled.textarea`
+background-color:transparent;
+height:90%;
 width:90%;border:0;
 color:white;
 outline: none;
@@ -112,6 +109,12 @@ transition: ease 0.5s; /* corrected transition property */
 &:hover {
   transform: scale(1.2);
 }
+`;
+
+const Button=styled.button`
+background-color:transparent;
+color:white;
+border:none;
 `;
 const Main = styled.div``;
 
@@ -157,13 +160,13 @@ const Feed = () => {
   return (<Main>
     {/* Remove this loading video  */}
     {/* <Loading onEnded={handleVideoEnded} display={videoDisplay} /> */}
-    <Container backgroundImage="https://i.ibb.co/4Z98Ms2/try.png">
+    <Container>
       <Bar setFormData={setFormData} formData={formData}/>
       <Wrapper>
         <CodeContainer>
           <InputCode placeholder="#CODE YOUR DISH HERE!" value={formData.code} name="code" onChange={changeHandler}></InputCode>
           <ButtonContainer>
-            <IconContainer> <button onClick={submitHandler}><PlayCircleIcon sx={{ fontSize: 55 }}/></button> </IconContainer>
+            <IconContainer> <Button onClick={submitHandler}><PlayCircleIcon sx={{ fontSize: 55 ,color:"teal"}}/></Button> </IconContainer>
           </ButtonContainer>
         </CodeContainer>
 
