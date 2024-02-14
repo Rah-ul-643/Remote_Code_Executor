@@ -4,9 +4,12 @@ import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import { useState } from "react";
 import Bar from "./../components/feedbar";
 import { compileCode } from "../services/codeAPIs";
+import Editor from '@monaco-editor/react';
+import { useRef } from "react";
+
 
 const Container = styled.div`
-background-color:#21222D;
+  background-image: url(${(props) => props.backgroundImage});
   width: 100vw;
   height: 100vh;
     display: ${(props) => props.display};
@@ -19,27 +22,29 @@ const Wrapper = styled.div`
   align-items: center;
   width: 95%;
   height: 90%;
-  gap: 10vw;
+  gap: 30px;
    margin-left: 30px;
 `;
 
 const InputContainer = styled.div`
-  background-color:#171821;
+background-color: transparent;
   width: 80%;
   padding: 20px;
   height: 40%;
-  border-radius:5px;
+  border:1px solid white;
+  border-radius:10px;
   color:white;
     backdrop-filter: blur(5px);
 
 `;
 
 const OutputContainer = styled.div`
-  background-color:#171821;
+background-color: transparent;
   width: 80%;
   padding: 20px;
   height: 40%;
-  border-radius:5px;
+  border:0.1px solid white;
+  border-radius:10px;
   color:white;
     backdrop-filter: blur(5px);
 `;
@@ -56,12 +61,14 @@ const IOContainer = styled.div`
 
 const CodeContainer = styled.div`
   display: flex;
-  flex: 1.2;
-  background-color:#171821;
+  flex: 1.5;
+  background-color: transparent;
   padding: 20px;
   height: 65%;
-  border-radius: 5px;
+  border: 0.1px solid white;
+  border-radius: 10px;
   color: white;
+  backdrop-filter: blur(5px);
   flex-direction: column;
 
 `;
@@ -93,9 +100,7 @@ width:90%;border:0;
 color:white;
 outline: none;
 `;
-const OutputArea = styled.textarea`
-background-color:transparent;
-height:90%;
+const OutputArea = styled.textarea`background-color:transparent;height:90%;
 width:90%;border:0;
 color:white;
 outline: none;
@@ -110,22 +115,16 @@ transition: ease 0.5s; /* corrected transition property */
   transform: scale(1.2);
 }
 `;
-
-const Button=styled.button`
-background-color:transparent;
-color:white;
-border:none;
-`;
 const Main = styled.div``;
 
 const Feed = () => {
 
   const [videoDisplay, setVideoDisplay] = useState("flex");
   const [codeDisplay, setCodeDisplay] = useState("none");
+  const [code,setCode]=useState("// CODE YOUR DISHES HERE");
   const [formData, setFormData] = useState({
-    code: "",
     input: "",
-    language:"",
+    language:"python",
     output: "",
   });
 
@@ -138,10 +137,11 @@ const Feed = () => {
   }
   const submitHandler=async(e)=>{
     e.preventDefault();
+    console.log(code);
     console.log(formData);
     try{
       console.log("Compiling code...");
-      const compiledOutput=await compileCode(formData.code,formData.input,formData.language);
+      const compiledOutput=await compileCode(code,formData.input,formData.language);
       setFormData({
         ...formData,
         output: compiledOutput
@@ -150,6 +150,14 @@ const Feed = () => {
     catch(error){
       console.log("Error in compiling code",error);
     }
+  }
+  const editorRef = useRef(null);
+  function handleEditorDidMount(editor, monaco) {
+    editorRef.current = editor;
+  }
+  function handleEditorChange(value, event) {
+    console.log(value);
+    setCode(value);
   }
 
 
@@ -160,13 +168,16 @@ const Feed = () => {
   return (<Main>
     {/* Remove this loading video  */}
     {/* <Loading onEnded={handleVideoEnded} display={videoDisplay} /> */}
-    <Container>
-      <Bar setFormData={setFormData} formData={formData}/>
+    <Container backgroundImage="https://i.ibb.co/4Z98Ms2/try.png">
+      <Bar setFormData={setFormData} formData={formData} setCode={setCode}/>
       <Wrapper>
         <CodeContainer>
-          <InputCode placeholder="#CODE YOUR DISH HERE!" value={formData.code} name="code" onChange={changeHandler}></InputCode>
+        <Editor height="90vh" onMount={handleEditorDidMount} onChange={handleEditorChange} language="python" value={code} >
+          {/* <InputCode placeholder="#CODE YOUR DISH HERE!" value={formData.code} name="code" onChange={changeHandler}></InputCode> */}
+          </Editor>
+          
           <ButtonContainer>
-            <IconContainer> <Button onClick={submitHandler}><PlayCircleIcon sx={{ fontSize: 55 ,color:"teal"}}/></Button> </IconContainer>
+            <IconContainer> <button onClick={submitHandler}><PlayCircleIcon sx={{ fontSize: 55 }}/></button> </IconContainer>
           </ButtonContainer>
         </CodeContainer>
 
@@ -176,7 +187,7 @@ const Feed = () => {
             <InputArea placeholder="INPUT" value={formData.input} name="input" onChange={changeHandler}></InputArea>
           </InputContainer>
           <OutputContainer>
-            <OutputArea placeholder="OUTPUT" value={formData.output} name="output" onChange={changeHandler}></OutputArea>
+            <OutputArea disabled placeholder="OUTPUT" value={formData.output} name="output" onChange={changeHandler}></OutputArea>
           </OutputContainer>
         </IOContainer>
       </Wrapper>
