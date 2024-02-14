@@ -1,6 +1,8 @@
 import toast from "react-hot-toast";
 import { endpoints } from "./apis";
 import { apiConnector } from "./apiConnector";
+import { setToken } from "../slices/authSlice";
+import { RepeatOneSharp } from "@mui/icons-material";
 
 const {
     SENDOTP_API,
@@ -55,7 +57,7 @@ export const register = async (formData) => {
     }
     toast.dismiss(toastId);
 }
-export const login = async (formData) => {
+export const login = async (formData,dispatch) => {
     const toastId = toast.loading("Logging in...");
     try {
         const response = await apiConnector("POST", LOGIN_API, formData).catch(error => {
@@ -64,8 +66,12 @@ export const login = async (formData) => {
         });
 
         console.log("LOGIN API RESPONSE :", response);
-
+        const jwt = response.data.token;
+        console.log(jwt);
+        dispatch(setToken(jwt));
+        window.localStorage.setItem("token",jwt);
         toast.success("Logged in successfully");
+        window.location.reload();
     }
     catch (error) {
         console.log("LOGIN API FAILED:", error);

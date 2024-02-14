@@ -27,7 +27,7 @@ const loginUser = async (req, res) => {
         if (await bcrypt.compare(password, user.password)) {
             console.log("user logged in");
             const token = generateToken(user.firstName, user.lastName, user.email);
-            res.cookie('jwt', token, { httpOnly: true });
+            res.cookie('token', token, { httpOnly: true });
             return res.status(200).json({
                 sucess: true,
                 message: "User logged in",
@@ -40,8 +40,6 @@ const loginUser = async (req, res) => {
         console.log("User does not exist. Signup Instead?");
         return res.status(403).json({ message: "User does not exist. Signup Instead?" });
     }
-
-    
 }
 
 
