@@ -1,0 +1,13 @@
+
+
+
+body{
+  background-color: #171821;
+}
+
+@media (max-width: 750px) {
+  /* Set background color to transparent */
+  body {
+    background-color: transparent;
+  }
+}
