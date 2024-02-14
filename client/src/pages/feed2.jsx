@@ -8,6 +8,7 @@ import Editor from '@monaco-editor/react';
 import { useRef } from "react";
 
 
+
 const Container = styled.div`
   background-image: url(${(props) => props.backgroundImage});
   width: 100vw;
@@ -121,7 +122,7 @@ const Feed = () => {
 
   const [videoDisplay, setVideoDisplay] = useState("flex");
   const [codeDisplay, setCodeDisplay] = useState("none");
-  const [code,setCode]=useState("// CODE YOUR DISHES HERE");
+  const [code,setCode]=useState("# START YOUR CODE HERE");
   const [formData, setFormData] = useState({
     input: "",
     language:"python",
@@ -160,14 +161,15 @@ const Feed = () => {
     setCode(value);
   }
 
-
   const handleVideoEnded = () => {
     setVideoDisplay("none");
     setCodeDisplay("flex");
   };
+  
   return (<Main>
     {/* Remove this loading video  */}
     {/* <Loading onEnded={handleVideoEnded} display={videoDisplay} /> */}
+
     <Container backgroundImage="https://i.ibb.co/4Z98Ms2/try.png">
       <Bar setFormData={setFormData} formData={formData} setCode={setCode}/>
       <Wrapper>
