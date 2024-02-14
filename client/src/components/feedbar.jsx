@@ -101,7 +101,7 @@ const Bar = ({ setFormData, formData, setCode}) => {
         <BarItem>
           <Language value={selectedLanguage} onChange={handleLanguageChange}>
             <LanguageOption value="java">Java</LanguageOption>
-            <LanguageOption value="py">Python</LanguageOption>
+            <LanguageOption value="python">Python</LanguageOption>
             <LanguageOption value="cpp">C++</LanguageOption>
             <LanguageOption value="c">C</LanguageOption>
           </Language>

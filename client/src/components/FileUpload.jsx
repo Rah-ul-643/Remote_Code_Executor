@@ -4,15 +4,23 @@ import toast from 'react-hot-toast';
 const FileUpload = ({setCode,selectedLanguage}) => {
   const [fileContent, setFileContent] = useState('');
 
+  const fileExtensions= {
+    python: 'py',
+    cpp: 'cpp',
+    java: 'java',
+    c: 'c'
+  }
+
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
     const fileType = file.name.split('.').pop();
-    console.log(fileType);
-    if (fileType !== selectedLanguage) {
+  
+    if (fileType !== fileExtensions[selectedLanguage]) {
       toast.error("File type not supported");
       return;
     }
+
 
     reader.onload = (e) => {
       // Once the file is loaded, set the content to state

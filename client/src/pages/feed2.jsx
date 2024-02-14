@@ -173,7 +173,7 @@ const Feed = () => {
       <Bar setFormData={setFormData} formData={formData} setCode={setCode}/>
       <Wrapper>
         <CodeContainer>
-        <Editor height="90vh" onMount={handleEditorDidMount} onChange={handleEditorChange} language="python" value={code} >
+        <Editor height="50vh" onMount={handleEditorDidMount} onChange={handleEditorChange} language="python" value={code} >
           {/* <InputCode placeholder="#CODE YOUR DISH HERE!" value={formData.code} name="code" onChange={changeHandler}></InputCode> */}
           </Editor>
           
