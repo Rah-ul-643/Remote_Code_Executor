@@ -28,6 +28,7 @@ export const compileCode = async (code,input,language) => {
     catch (error) {
         console.log("COMPILE API FAILED:", error);
         toast.error("Failed to compile");
+        output= error.response.data;
     }
     finally{
         toast.dismiss(toastId);

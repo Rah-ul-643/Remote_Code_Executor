@@ -72,7 +72,7 @@ const Bar = ({ setFormData, formData, setCode}) => {
   };
   const resetHandler = (e) => {
     e.preventDefault();
-    setCode("// CODE YOUR DISHES HERE");
+    setCode("# START YOUR CODE HERE");
     setFormData({
       input: "",
       output: "",

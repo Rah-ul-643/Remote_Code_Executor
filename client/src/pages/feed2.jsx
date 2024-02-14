@@ -122,7 +122,7 @@ const Feed = () => {
 
   const [videoDisplay, setVideoDisplay] = useState("flex");
   const [codeDisplay, setCodeDisplay] = useState("none");
-  const [code,setCode]=useState("// CODE YOUR DISHES HERE");
+  const [code,setCode]=useState("# START YOUR CODE HERE");
   const [formData, setFormData] = useState({
     input: "",
     language:"python",
@@ -157,7 +157,6 @@ const Feed = () => {
     editorRef.current = editor;
   }
   function handleEditorChange(value, event) {
-    console.log(value);
     setCode(value);
   }
 
@@ -166,6 +165,7 @@ const Feed = () => {
     setVideoDisplay("none");
     setCodeDisplay("flex");
   };
+  
   return (<Main>
     {/* Remove this loading video  */}
     {/* <Loading onEnded={handleVideoEnded} display={videoDisplay} /> */}
