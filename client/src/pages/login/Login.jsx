@@ -1,8 +1,11 @@
 import "./login.css";
 import { useState } from "react";
 import { login } from "../../services/authAPIs";
+import {useDispatch} from "react-redux"
+
 
 const Login=()=>{
+  const dispatch = useDispatch();
   const [formData,setFormData] = useState({
     email:"",
     password:"",
@@ -18,7 +21,7 @@ const Login=()=>{
     e.preventDefault();
     console.log(formData);
     try{
-        login(formData);
+        login(formData,dispatch);
     }
     catch(error){
         console.log("Error in login",error);

@@ -1,4 +1,3 @@
-
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Feed from "./pages/feed2";

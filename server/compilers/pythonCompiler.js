@@ -40,9 +40,10 @@ const executePythonCode= async (code,input)=> {
         finally{
             
             try {
-                await exec(`docker rm -f ${containerName}`)                                         // force remove the container 
+
                 fs.unlinkSync('pythonCode.py');                                                     // remove all temporary files 
                 fs.unlinkSync('input.txt');
+                await exec(`docker rm -f ${containerName}`)                                         // force remove the container 
                                                                 
             } catch (error) {
                 console.log(`An error occured while cleaning up: ${error}`);

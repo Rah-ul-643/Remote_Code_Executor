@@ -4,6 +4,9 @@ import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import { useState } from "react";
 import Bar from "./../components/feedbar";
 import { compileCode } from "../services/codeAPIs";
+import Editor from '@monaco-editor/react';
+import { useRef } from "react";
+
 
 const Container = styled.div`
 background-color:#21222D;
@@ -122,10 +125,10 @@ const Feed = () => {
 
   const [videoDisplay, setVideoDisplay] = useState("flex");
   const [codeDisplay, setCodeDisplay] = useState("none");
+  const [code,setCode]=useState("// CODE YOUR DISHES HERE");
   const [formData, setFormData] = useState({
-    code: "",
     input: "",
-    language:"",
+    language:"python",
     output: "",
   });
 
@@ -138,10 +141,11 @@ const Feed = () => {
   }
   const submitHandler=async(e)=>{
     e.preventDefault();
+    console.log(code);
     console.log(formData);
     try{
       console.log("Compiling code...");
-      const compiledOutput=await compileCode(formData.code,formData.input,formData.language);
+      const compiledOutput=await compileCode(code,formData.input,formData.language);
       setFormData({
         ...formData,
         output: compiledOutput
@@ -150,6 +154,14 @@ const Feed = () => {
     catch(error){
       console.log("Error in compiling code",error);
     }
+  }
+  const editorRef = useRef(null);
+  function handleEditorDidMount(editor, monaco) {
+    editorRef.current = editor;
+  }
+  function handleEditorChange(value, event) {
+    console.log(value);
+    setCode(value);
   }
 
 
@@ -160,11 +172,15 @@ const Feed = () => {
   return (<Main>
     {/* Remove this loading video  */}
     {/* <Loading onEnded={handleVideoEnded} display={videoDisplay} /> */}
-    <Container>
-      <Bar setFormData={setFormData} formData={formData}/>
+
+    <Container backgroundImage="https://i.ibb.co/4Z98Ms2/try.png">
+      <Bar setFormData={setFormData} formData={formData} setCode={setCode}/>
       <Wrapper>
         <CodeContainer>
-          <InputCode placeholder="#CODE YOUR DISH HERE!" value={formData.code} name="code" onChange={changeHandler}></InputCode>
+        <Editor height="50vh" onMount={handleEditorDidMount} onChange={handleEditorChange} language="python" value={code} >
+          {/* <InputCode placeholder="#CODE YOUR DISH HERE!" value={formData.code} name="code" onChange={changeHandler}></InputCode> */}
+          </Editor>
+          
           <ButtonContainer>
             <IconContainer> <Button onClick={submitHandler}><PlayCircleIcon sx={{ fontSize: 55 ,color:"teal"}}/></Button> </IconContainer>
           </ButtonContainer>
@@ -176,7 +192,7 @@ const Feed = () => {
             <InputArea placeholder="INPUT" value={formData.input} name="input" onChange={changeHandler}></InputArea>
           </InputContainer>
           <OutputContainer>
-            <OutputArea placeholder="OUTPUT" value={formData.output} name="output" onChange={changeHandler}></OutputArea>
+            <OutputArea disabled placeholder="OUTPUT" value={formData.output} name="output" onChange={changeHandler}></OutputArea>
           </OutputContainer>
         </IOContainer>
       </Wrapper>

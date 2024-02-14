@@ -4,6 +4,7 @@ import styled from "styled-components";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import { useState } from "react";
+import FileUpload from "../components/FileUpload";
 
 const LanguageOption = styled.option`
 position: absolute;
@@ -58,9 +59,8 @@ display: flex;
 
 const FileInput = styled.input``;
 
-const Bar = ({ setFormData, formData }) => {
-  const [selectedLanguage, setSelectedLanguage] = useState("default");
-
+const Bar = ({ setFormData, formData, setCode}) => {
+  const [selectedLanguage, setSelectedLanguage] = useState("python");
 
   const handleLanguageChange = (e) => {
     setSelectedLanguage(e.target.value);
@@ -72,10 +72,11 @@ const Bar = ({ setFormData, formData }) => {
   };
   const resetHandler = (e) => {
     e.preventDefault();
+    setCode("// CODE YOUR DISHES HERE");
     setFormData({
       input: "",
       output: "",
-      code: "",
+      language: "python"
     });
   }
   return (
@@ -94,14 +95,11 @@ const Bar = ({ setFormData, formData }) => {
         <BarItem>
           <IconContainer>
             <ArrowCircleUpIcon />
-            <FileInput
-              type="file" /
-            >
+            <FileUpload setCode={setCode} selectedLanguage={selectedLanguage}></FileUpload>
           </IconContainer>
         </BarItem>
         <BarItem>
           <Language value={selectedLanguage} onChange={handleLanguageChange}>
-            <LanguageOption value="default" disabled hidden>Choose Language</LanguageOption>
             <LanguageOption value="java">Java</LanguageOption>
             <LanguageOption value="python">Python</LanguageOption>
             <LanguageOption value="cpp">C++</LanguageOption>
