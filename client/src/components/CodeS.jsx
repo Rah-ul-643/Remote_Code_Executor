@@ -337,7 +337,7 @@ ${mobile({ fontSize: "10px" })};
 
 
 
-const Test=()=>{
+const CodeS=()=>{
 
 
 
@@ -553,4 +553,4 @@ return(<Container>
   </Container>);
 }
 
-export default Test;
+export default CodeS;
