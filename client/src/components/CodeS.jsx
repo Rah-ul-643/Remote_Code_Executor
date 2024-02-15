@@ -457,10 +457,6 @@ return(<Container>
 <Wrappper>
 
 
-
-
-
-
    <Main>
                       <MainTop>
                       <MainTopSec> <MainTopImage src="./astro3.png"></MainTopImage>    </MainTopSec>

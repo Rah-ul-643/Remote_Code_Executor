@@ -1,5 +1,11 @@
 const express= require('express');
+
+const http = require('http');
+const socketIo = require('socket.io');
+
 const app= express();
+const server = http.createServer(app);
+const io = socketIo(server);
 
 // routes
 const userRoutes= require('./routes/user');
@@ -15,7 +21,6 @@ dotenv.config();
 // database connection
 dbConnect();
 
-
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
@@ -26,6 +31,19 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.static('public'));
+
+// chatroom
+
+io.on('connection', (socket) => {
+    console.log('User connected with id: ' + socket.id);
+  
+
+    socket.on('send-code',(code)=>{
+      console.log(code);
+      socket.broadcast.emit('receive-code',code);
+    })
+  
+  });
 
  // routes
 app.use('/api/v1/code',codeRoutes);

@@ -85,13 +85,28 @@ position:absolute;
 z-index:1;
 ${mobile({ right:"15vw"})};
 `;
+const token = window.localStorage.getItem("token");
+
+const logoutHandler = () => {
+  window.localStorage.removeItem("token");
+  window.location.reload();
+}
 
 const Front = () => {
   return (
     <Container>
     <Nav>
-    <Link to='/login'>    <ButtonContainer>Login</ButtonContainer></Link>
-    <Link to='/register'>    <ButtonContainer>Register</ButtonContainer></Link>
+      { !token &&
+        <div>
+        <Link to='/login'>    <ButtonContainer>Login</ButtonContainer></Link>
+        <Link to='/register'>    <ButtonContainer>Register</ButtonContainer></Link>
+      </div>
+      }
+      {
+        token &&
+          <ButtonContainer onClick={logoutHandler}>Logout</ButtonContainer>
+      }
+      
     </Nav>
       <VideoContainer>
         <video width="100%" height="100%" autoPlay loop muted playsInline  >
