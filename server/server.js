@@ -75,7 +75,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on('disconnection',(roomID)=>{
-    socket.to(roomID).emit('offline-socket',socket.id);
+    leaveRoom(socket,roomID,socket.id);
   })
   
 });
