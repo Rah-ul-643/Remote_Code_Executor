@@ -11,6 +11,8 @@ const compileCode= (req,res)=>{
     const code= req.body.code;
     let input= req.body.input || "";
 
+    console.log(language);
+
     if (validate(code,language)){
 
         if (language==='python'){

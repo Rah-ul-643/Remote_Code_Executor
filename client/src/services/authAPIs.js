@@ -2,7 +2,6 @@ import toast from "react-hot-toast";
 import { endpoints } from "./apis";
 import { apiConnector } from "./apiConnector";
 import { setToken } from "../slices/authSlice";
-import { RepeatOneSharp } from "@mui/icons-material";
 
 const {
     SENDOTP_API,

@@ -10,14 +10,15 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <script src="https://cdn.tailwindcss.com"></script>
+
     </head>
     <body>
         <h1 class="text-center text-4xl m-12 font-bold">Online <span id="language"></span> Compiler</h1>
-        <div class="flex items-center m-4">
+        <div class="flex justify-evenly items-center m-4">
             <h1 class="text-3xl font-bold mx-6">Language:</h1>
-            <form >
+            <form>
                 
                 <input type="radio" name="language" onclick="setLanguage('cpp')"  value="cpp">
                 <label for="cpp">C++</label>
@@ -32,13 +33,39 @@
                 <label for="js">JavaScript</label>
 
             </form>
+            <div>
+                <div class="m-2">
+                    <label for="username" class="font-bold text-2xl">Enter username: </label>
+                    <input type="text" name="username" id="username" class="border-2 border-black px-2">
+                    <button onclick="setUsername()" class="m-2 bg-yellow-400 border-2 border-black p-1 font-bold text-lg">Submit</button>
+                </div>
+                <div class="m-2">
+                    <label for="room" class="font-bold text-2xl">Enter Room ID: </label>
+                    <input type="text" name="room" id="room-id" class="border-2 border-black px-2">
+                    <button id="join-room" class="m-2 bg-green-600 border-2 border-black p-1 font-bold text-lg">Join Room</button>
+                    <button id="leave-room" class="m-2 bg-red-600 border-2 border-black p-1 font-bold text-lg">Leave Room</button>
+        
+                    <h1 id="room-id-display" class="font-semibold text-lg"></h1>
+                </div>
+        
+                <div class="m-2">
+                    <button id="create-room" onclick="createRoom()" class=" text-white font-bold m-2 bg-blue-600 border-2 border-black font-bold text-lg p-1">Create Room</button>
+                    
+                </div>
+            </div>
+            
+
         </div>
-           
-        <div class="flex fixed justify-evenly h-3/4 w-full">
+
+
+        <div id="room-info-sec" class="m-4"></div>
+    
+        
+        <div class="flex justify-evenly h-3/4 w-full">
             <form action="/compileCode" method="post" id="form" class="m-4 flex flex-col items-center w-2/3">
                 <h2 class="text-left w-full text-xl font-semibold m-2">Your code goes here:</h2>
                 <textarea name="codeInput" id="codeInputSection" rows="15"
-                class=" border-2 p-8 text-xl h-full w-full focus:outline-orange-500 border-black"></textarea>
+                class=" border-2 p-8 text-xl h-full w-full focus:outline-orange-500 border-black" onchange="sendInput()"></textarea>
     
                 <button type="submit" class="w-fit m-4 bg-green-600 p-2 border-black border-2 font-bold h-12 text-white text-xl rounded-md">Run</button>
 
@@ -48,8 +75,10 @@
                 <p id="output" class="p-8 text-2xl"></p>
             </div>
         </div>
-        
 
+
+        <script src="/socket.io/socket.io.js"></script>
         <script src="index.js" async defer></script>
+           
     </body>
 </html>
