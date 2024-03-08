@@ -3,11 +3,13 @@
 
 body{
   background-color: #171821;
+  overflow-x: hidden;
 }
 
 @media (max-width: 750px) {
   /* Set background color to transparent */
   body {
     background-color: transparent;
+    
   }
 }

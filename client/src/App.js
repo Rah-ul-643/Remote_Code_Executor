@@ -3,7 +3,7 @@ import Register from "./pages/register/Register";
 import Front from "./pages/front";
 import CodeS from "./components/CodeS";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./app.css";
+import "./App.css";
 
 function App() {
   const user=false

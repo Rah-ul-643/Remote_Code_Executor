@@ -1,12 +1,22 @@
 import React, { useEffect } from "react";
-import {useState} from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import axios from "axios";
-import {mobile } from "./../responsive";
+import toast from "react-hot-toast";
+import { mobile } from "./../responsive";
 import { compileCode } from "../services/codeAPIs";
+import AceEditor from 'react-ace';
+import 'ace-builds/src-noconflict/mode-javascript';
+import 'ace-builds/src-noconflict/mode-python';
+import 'ace-builds/src-noconflict/mode-java';
+import 'ace-builds/src-noconflict/mode-csharp';
+import 'ace-builds/src-noconflict/mode-markdown';
+import 'ace-builds/src-noconflict/theme-twilight';
+import ace from 'ace-builds';
+ace.config.set('workerPath', process.env.PUBLIC_URL + '/ace-builds/src-noconflict');
 
-const Container=styled.div`
+const Container = styled.div`
 color:white;
 display:flex;
 justify-content:center;
@@ -16,7 +26,7 @@ text-align: center;
 height:140vh;
 width:100vw;
 `;
-const Wrappper=styled.div`
+const Wrappper = styled.div`
 display:flex;
 height:85%;
 width:98%;
@@ -24,7 +34,7 @@ gap:20px;
 `;
 //STYLING OF SIDE BAR
 
-const Sidebar =styled.div`
+const Sidebar = styled.div`
 padding-top:50px;
 display:flex;
 height:90%;
@@ -37,7 +47,7 @@ gap:10px;
 `;
 
 
-const SidebarItem=styled.div`
+const SidebarItem = styled.div`
 height:10%;
 display:flex;
 width:100%;
@@ -47,7 +57,7 @@ align-items: center;
 text-align: center;
 `;
 
-const SidebarHead=styled.div`
+const SidebarHead = styled.div`
 height:10%;
 display:flex;
 width:100%;
@@ -56,7 +66,7 @@ align-items: center;
 text-align: center;
 color:white;
 `;
-const SidebarButton=styled.button`
+const SidebarButton = styled.button`
 padding:10px;
 width:80%;
 background-color:#914EC2;
@@ -66,11 +76,11 @@ color:white;
 `;
 
 
-const CurrentPrompt=styled.h4`
+const CurrentPrompt = styled.h4`
 font-weight:lighter;`;
 
 //STYLING OF MAIN PROMPT SECTITON
-const Main=styled.div`
+const Main = styled.div`
 display:flex;
 height:100%;
 margin:20px;
@@ -86,7 +96,7 @@ gap:20px;`;
 
 
 //Top section  of the main styling
-const MainTop=styled.div`
+const MainTop = styled.div`
 display:flex;
 justify-content: center;
 align-items: center;
@@ -96,7 +106,7 @@ width:90%;
 gap:10px;
 `;
 
-const MainTopSec=styled.div`
+const MainTopSec = styled.div`
 display:flex;
 justify-content: center;
 align-items: center;
@@ -107,7 +117,7 @@ position:relative;
 `;
 
 
-const MainTopText=styled.h2`
+const MainTopText = styled.h2`
 font-weight:lighter;
 padding:20px;
 ${mobile({ fontSize: "14px", })};
@@ -115,17 +125,17 @@ font-family:"Orbitron";
 font-size:25px;
 `;
 
-const MainTopImage=styled.img`
+const MainTopImage = styled.img`
 height:40vh;
 width:30vw;
 position:absolute;
 margin-bottom:40px;
-${mobile({height: "240px",width:"260px" })};
+${mobile({ height: "240px", width: "260px" })};
 
 `;
 
 //control section of main stylings
-const MainControl=styled.div`
+const MainControl = styled.div`
 flex:0.5;
 display:flex;
 justify-content: space-between;
@@ -133,11 +143,11 @@ gap:100px;
 align-items: center;
 text-align: center;
 width:90%;
-${mobile({ gap:"15%" })};
+${mobile({ gap: "15%" })};
 
 `;
 
-const MainControlSec=styled.div`
+const MainControlSec = styled.div`
 flex:1;
 height:100%;
 display:flex;
@@ -148,10 +158,10 @@ text-align: center;
 
 
 
-const MainControlInput=styled.input`
+const MainControlInput = styled.input`
 `;
 
-const MainControlButton=styled.button`
+const MainControlButton = styled.button`
 height:50%;
 width:50%;
 color:white;
@@ -167,13 +177,13 @@ ${mobile({ fontSize: "10px" })};
   }
 
 `;
-const MainControlModel=styled.p`
+const MainControlModel = styled.p`
 color:#11ACAC;
 
 `;
 
 // Mid section of the main styling
-const MainMid=styled.div`
+const MainMid = styled.div`
 flex:1.1;
   background-color: #171821;
   border-radius:20px;
@@ -188,7 +198,7 @@ gap:10px;
 
 //trialllllllllllllllll
 
-const MainMid1=styled.div`
+const MainMid1 = styled.div`
 flex:4;
   border-radius:20px;
 width:90%;
@@ -197,13 +207,13 @@ display:flex;
 align-items: center;
 text-align: center;
 gap:100px;
-${mobile({ gap:"50px" })};
+${mobile({ gap: "50px" })};
 
 `;
 
 
 
-const MainMidSec=styled.div`
+const MainMidSec = styled.div`
 align-items: center;
 text-align: center;
 gap:10px;
@@ -215,7 +225,7 @@ height:100%;
 border-radius:20px;
 `;
 
-const MainMidSecIO=styled.div`
+const MainMidSecIO = styled.div`
 flex:1;
 align-items: center;
 text-align: center;
@@ -225,7 +235,7 @@ flex-direction:column;
 height:100%;
 `;
 
-const MainMidSecInp=styled.div`
+const MainMidSecInp = styled.div`
 align-items: center;
 text-align: center;
 gap:10px;
@@ -237,7 +247,7 @@ width:100%;
 border-radius:20px;
 `;
 
-const MainMidSecTop=styled.div`
+const MainMidSecTop = styled.div`
 display:flex;
 flex:0.1;
 width:95%;
@@ -248,23 +258,23 @@ text-align: center;
 margin-top:10px;
 `;
 
-const MidSecTopText=styled.p`margin:0;
+const MidSecTopText = styled.p`margin:0;
 padding:5px;
 font-size:13px;
 color:#948D8D;
 ${mobile({ fontSize: "10px" })};
 `;
 
-const MainTab=styled.div`
+const MainTab = styled.div`
 height:100%;
 width:25%;
 border-radius:10px;
 background-color:#21222D;
-${mobile({ width:"100%" })};
+${mobile({ width: "100%" })};
 
 `;
 
-const MainMidSecBottom=styled.div`
+const MainMidSecBottom = styled.div`
 display:flex;
 flex:3;
 width:95%;
@@ -275,7 +285,7 @@ text-align: center;
 `;
 
 
-const MainMidTextArea=styled.textarea`
+const MainMidTextArea = styled.textarea`
 flex: 1;
  width: 100%;
  height:90%;
@@ -292,7 +302,7 @@ flex: 1;
 `;
 
 //Button section
-const MainButton=styled.div`
+const MainButton = styled.div`
 flex:0.5;
 width:90%;
 display:flex;
@@ -302,7 +312,7 @@ text-align: center;
 `;
 
 
-const ButtonContainer=styled.div`
+const ButtonContainer = styled.div`
 width:30%;
 height:100%;
 display:flex;
@@ -311,20 +321,20 @@ align-items: center;
 text-align: center;
 margin-bottom:30px;`;
 
-const Button=styled.button`
+const Button = styled.button`
 padding:10px;
 width:30%;
 background-color:#11ACAC;
 border-radius:10px;
 border:none;
-${mobile({ width:"50%" })};
+${mobile({ width: "50%" })};
 
 `;
 
 //Select
 
 const CustomSelect = styled.select`
-  background-color: transparent;
+  background-color: black;
   border: none;
   text-decoration: none;
 color:white;
@@ -333,19 +343,31 @@ ${mobile({ fontSize: "10px" })};
 
 `;
 
+const ModalBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+`;
+
+const ModalContent = styled.div`
+  width: 500px;
+  background: #242424;
+  padding: 20px;
+  border-radius: 10px;
+`;
 
 
 
 
-const CodeS=()=>{
 
-
-
-
-
-
-
-
+const CodeS = () => {
 
 
   const [isClickedSty, setIsClickedSty] = useState(false);
@@ -353,198 +375,333 @@ const CodeS=()=>{
 
 
 
-const [style,setstyle]=useState("");
-const [promptName,setPromptName]=useState("Untitled");
-   const [color, setcolor] = useState(' ');
+  const [style, setstyle] = useState("");
+  const [promptName, setPromptName] = useState("Untitled");
+  const [color, setcolor] = useState(' ');
 
 
 
 
-   const [selectedModel, setSelectedModel] = useState('openai/gpt-3.5-turbo');
+  const [selectedModel, setSelectedModel] = useState('openai/gpt-3.5-turbo');
 
-  const handlePromptName =(event)=>{
+  const handlePromptName = (event) => {
     setPromptName(event.target.value);
   }
 
-    const handleModelChange = (event) => {
-      setSelectedModel(event.target.value);
-    };
+  const handleModelChange = (event) => {
+    setSelectedModel(event.target.value);
+  };
 
 
-//Variablesssss
-
-
-
-
-
-   const handlestyle = (e) => {
-     setstyle(e.target.value);
-   }
+  //Variablesssss
 
 
 
-   const handlecolor=(e)=>{
-     setcolor(e.target.value);
-   }
 
 
-
-   const handleClickCol=()=>{
-     setIsClickedCol(true);
-   }
-   const handleClickSty=()=>{
-     setIsClickedSty(true);
-   }
-
-//fadditon
-
-const [formData, setFormData] = useState({
-  code: "",
-  input: "",
-  language:"",
-  output: "",
-});
-
-const changeHandler = (e) => {
-  setFormData({
-    ...formData,
-    [e.target.name]: e.target.value
+  const handlestyle = (e) => {
+    setstyle(e.target.value);
   }
-  );
-}
-const submitHandler=async(e)=>{
-  e.preventDefault();
-  console.log(formData);
-  try{
-    console.log("Compiling code...");
-    const compiledOutput=await compileCode(formData.code,formData.input,formData.language);
+
+
+
+  const handlecolor = (e) => {
+    setcolor(e.target.value);
+  }
+
+
+
+  const handleClickCol = () => {
+    setIsClickedCol(true);
+  }
+  const handleClickSty = () => {
+    setIsClickedSty(true);
+  }
+
+  //fadditon
+
+  const [formData, setFormData] = useState({
+    code: "print('Hello, World!')",
+    input: "",
+    language: "python",
+    output: "",
+  });
+
+  const changeHandler = (newValue, inputName) => {
+    // Use newValue and inputName here
+    // For example, if you're updating the state, it would look something like this:
+    setFormData(prevState => ({ ...prevState, [inputName]: newValue }));
+
+  };
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+    try {
+      console.log("Compiling code...");
+      const compiledOutput = await compileCode(formData.code, formData.input, formData.language);
+      setFormData({
+        ...formData,
+        output: compiledOutput
+      });
+    }
+    catch (error) {
+      console.log("Error in compiling code", error);
+    }
+  }
+
+
+  const [selectedLanguage, setSelectedLanguage] = useState("python");
+  var currentLanguage = selectedLanguage;
+
+
+  const handleLanguageChange = (e) => {
+    setSelectedLanguage(e.target.value);
     setFormData({
       ...formData,
-      output: compiledOutput
+      language: e.target.value
+    })
+    setSelectedLanguage(e.target.value);
+    currentLanguage = e.target.value;
+    console.log(currentLanguage);
+    resetToTemplate();
+  };
+  const resetToTemplate = () => {
+    if (currentLanguage === 'python') {
+      setFormData({
+        ...formData,
+        code: "print('Hello, World!')"
+      });
+    }
+    else if (currentLanguage === 'cpp') {
+      setFormData({
+        ...formData,
+        code: "#include <iostream>\nusing namespace std;\n \nint main() {\n \t// your code goes here\nreturn 0;\n}"
+      });
+    }
+    else if (currentLanguage === 'java') {
+      setFormData({
+        ...formData,
+        code: "public class Main {\n \tpublic static void main(String[] args) {\n\t// your code goes here\n\t}\n}"
+      });
+    }
+    else if (currentLanguage === 'c') {
+      setFormData({
+        ...formData,
+        code: "#include <stdio.h>\nint main() {\n// your code goes here\nreturn 0;\n}"
+      });
+    }
+    else {
+      setFormData({
+        ...formData,
+        code: "// your code goes here"
+      });
+    }
+  }
+  const resetHandler = (e) => {
+    e.preventDefault();
+    setFormData({
+      input: "",
+      output: "",
+      code: "",
+
     });
+    resetToTemplate();
   }
-  catch(error){
-    console.log("Error in compiling code",error);
+
+  const [fileContent, setFileContent] = useState('');
+
+  const fileExtensions = {
+    python: 'py',
+    cpp: 'cpp',
+    java: 'java',
+    c: 'c'
   }
-}
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    const fileType = file.name.split('.').pop();
+    console.log(fileType);
+    console.log(fileExtensions[selectedLanguage]);
+
+    if (fileType !== fileExtensions[selectedLanguage]) {
+      toast.error("File type not supported");
+      return;
+    }
 
 
-const [selectedLanguage, setSelectedLanguage] = useState("default");
+    reader.onload = (e) => {
+      // Once the file is loaded, set the content to state
+      setFileContent(e.target.result);
+      changeHandler(e.target.result, 'code');
+    };
 
+    reader.readAsText(file); // Read file as text
+  };
+  const [isOpen, setIsOpen] = useState(false);
 
-const handleLanguageChange = (e) => {
-  setSelectedLanguage(e.target.value);
-  setFormData({
-    ...formData,
-    language: e.target.value
-  })
-  console.log(formData.language);
-};
-const resetHandler = (e) => {
-  e.preventDefault();
-  setFormData({
-    input: "",
-    output: "",
-    code: "",
-  });
-}
+  const openModal = () => {
+    const token = localStorage.getItem("token");
+    if (token === null) {
+      window.location.href = "/login";
+      toast.error("Please login to continue");
+    }
+    setIsOpen(true);
+  };
 
+  const closeModal = (e) => {
+    if (e.target.id === 'modal-background') {
+      setIsOpen(false);
+    }
+  };
 
-
-
-return(<Container>
-
-<Wrappper>
-
-
-   <Main>
-                      <MainTop>
-                      <MainTopSec> <MainTopImage src="./astro3.png"></MainTopImage>    </MainTopSec>
-                       <MainTopSec> <MainTopText>Your Code, Our Engine, Limitless Possibilities. <span style={{ fontWeight: 800 }}>CodeNova.</span></MainTopText></MainTopSec>
-                        </MainTop>
-
-
-                      <MainControl>
-                                   <MainControlSec>
-                                          <MainControlButton  onClick={resetHandler}>   Reset
-                                        </MainControlButton>
-
-                          </MainControlSec>
-
-                      <MainControlSec>
-<MainControlInput  type="file"/>
-
-                      </MainControlSec>
+  // room
+  const [room, setRoom] = useState('');
 
 
 
-                        <MainControlSec>              <MainControlModel>
-                                                                          <CustomSelect defaultValue="" value={selectedLanguage}
-                                                                                            onChange={handleLanguageChange}>
+  return (<Container>
+
+    <Wrappper>
 
 
-                                                                           <option value="option1">Python</option>
-                                                                           <option value="option2">C++</option>
-                                                                           <option value="option2">Java</option>
-                                                                           <option value="option2">C</option>
+      <Main>
+        <MainTop>
+          <MainTopSec> <MainTopImage src="./astro3.png"></MainTopImage>    </MainTopSec>
+          <MainTopSec> <MainTopText>Your Code, Our Engine, Limitless Possibilities. <span style={{ fontWeight: 800 }}>CodeNova.</span></MainTopText></MainTopSec>
+        </MainTop>
 
 
-                                                                              </CustomSelect>
+        <MainControl>
+          <MainControlSec>
+            <MainControlButton onClick={resetHandler}>   Reset
+            </MainControlButton>
 
-                                                </MainControlModel>
-                                          </MainControlSec>
-                      </MainControl>
+          </MainControlSec>
 
+          <MainControlSec>
+            <MainControlInput type="file" onChange={handleFileUpload} />
 
-
-
-                      <MainMid1>
-                                           <MainMidSec>
-                                           <MainMidSecTop>  <MainTab>   <MidSecTopText>Code </MidSecTopText></MainTab>        </MainMidSecTop>
-                                            <MainMidSecBottom>     <MainMidTextArea
-
-                                            value={formData.code} name="code" onChange={changeHandler}
-
-                                            ></MainMidTextArea>   </MainMidSecBottom>
-                                            </MainMidSec>
-
-                                              <MainMidSecIO>     <MainMidSecInp>
-                                                   <MainMidSecTop>  <MainTab>   <MidSecTopText  >Input</MidSecTopText></MainTab>        </MainMidSecTop>
-                                                    <MainMidSecBottom>
-                                                         <MainMidTextArea
-                                                    value={formData.input} name="input" onChange={changeHandler}
-                                                  ></MainMidTextArea>   </MainMidSecBottom>
-                                                   </MainMidSecInp>
-
-
-                                                   <MainMidSecInp>
-                                                      <MainMidSecTop>  <MainTab>   <MidSecTopText>Output</MidSecTopText></MainTab>        </MainMidSecTop>
-                                                       <MainMidSecBottom>
-                                                          <MainMidTextArea
-                                                    value={formData.output} name="output" onChange={changeHandler}
-                                                     ></MainMidTextArea>   </MainMidSecBottom>
-                                                      </MainMidSecInp>
-
-
-                                                   </MainMidSecIO>
-                      </MainMid1>
+          </MainControlSec>
 
 
 
+          <MainControlSec>
+            <MainControlModel>
+              <CustomSelect defaultValue="" value={selectedLanguage}
+                onChange={handleLanguageChange}>
+
+
+                <option value="python">Python</option>
+                <option value="cpp">C++</option>
+                <option value="java">Java</option>
+                <option value="c">C</option>
+
+
+              </CustomSelect>
+
+            </MainControlModel>
+          </MainControlSec>
+          <MainControlSec>
+            <Button onClick={openModal}>Open Modal</Button>
+            {isOpen && (
+              <ModalBackground id="modal-background" onClick={closeModal}>
+                <ModalContent>
+                  {!room ? (
+                    <>
+                      <h1>Rooms</h1>
+                      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '0.1rem' }}>
+                        <input
+                          type="text"
+                          placeholder="Enter Room ID"
+                          value={room}
+                          onChange={(e) => setRoom(e.target.value)}
+                          style={{
+                            padding: '10px',
+                            fontSize: '16px',
+                            borderRadius: '5px',
+                            border: '1px solid #ccc',
+                            width: '100%',
+                            boxSizing: 'border-box'
+                          }}
+                        />
+                        <Button>Join Room</Button>
+                        <p>OR</p>
+                        <Button>Create Room</Button>
+                      </div>
+                    </>
+                  ) : (
+                    <h1>Models</h1>
+                  )}
+                </ModalContent>
+              </ModalBackground>
+            )}
+
+          </MainControlSec>
+        </MainControl>
 
 
 
 
+        <MainMid1>
+          <MainMidSec>
+            <MainMidSecTop>  <MainTab>   <MidSecTopText>Code </MidSecTopText></MainTab>        </MainMidSecTop>
+            <MainMidSecBottom style={{ zIndex: '1' }}>
+              {/* <MainMidTextArea
+
+                value={formData.code} name="code" onChange={changeHandler}
+
+              ></MainMidTextArea> */}
+
+              <AceEditor
+                mode="python"
+                theme="twilight"
+                name="code"
+                onChange={(newValue) => changeHandler(newValue, 'code')}
+                editorProps={{ $blockScrolling: true }}
+                width="100%"
+                height="95%"
+                value={formData.code}
+                fontSize={16}
+                setOptions={{
+                  enableBasicAutocompletion: true,
+                  enableLiveAutocompletion: true,
+                  enableSnippets: true,
+                  showLineNumbers: true,
+                  tabSize: 2,
+                }}
+              />
+
+            </MainMidSecBottom>
+          </MainMidSec>
+
+          <MainMidSecIO>     <MainMidSecInp>
+            <MainMidSecTop>  <MainTab>   <MidSecTopText  >Input</MidSecTopText></MainTab>        </MainMidSecTop>
+            <MainMidSecBottom>
+              <MainMidTextArea
+                value={formData.input} name="input" onChange={(e) => changeHandler(e.target.value, 'input')}
+              ></MainMidTextArea>   </MainMidSecBottom>
+          </MainMidSecInp>
 
 
+            <MainMidSecInp>
+              <MainMidSecTop>  <MainTab>   <MidSecTopText>Output</MidSecTopText></MainTab>        </MainMidSecTop>
+              <MainMidSecBottom>
+                <MainMidTextArea
+                  value={formData.output} name="output" readOnly
+                ></MainMidTextArea>   </MainMidSecBottom>
+            </MainMidSecInp>
 
 
-                       <MainButton>
-                       <ButtonContainer>   <Button onClick={submitHandler}>Run</Button>   </ButtonContainer>
-                       </MainButton>
+          </MainMidSecIO>
+        </MainMid1>
 
-   </Main>
-</Wrappper>
+        <MainButton>
+          <ButtonContainer>   <Button onClick={submitHandler}>Run</Button>   </ButtonContainer>
+        </MainButton>
+
+      </Main>
+    </Wrappper>
 
   </Container>);
 }
