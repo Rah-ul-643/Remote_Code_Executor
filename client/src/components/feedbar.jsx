@@ -7,23 +7,24 @@ import { useState } from "react";
 import FileUpload from "../components/FileUpload";
 
 const LanguageOption = styled.option`
-position: absolute;
+  position: absolute;
   top: 100%;
   left: 0;
-color:white;
-background-color:transparent;
+  color:white;
+  background-color:black;
   border: 1px solid #ccc;
-  z-index: 2;`;
+  z-index: 2;
+`;
 const Language = styled.select`
-padding: 5px;
-cursor: pointer;
-appearance: none;
-background-color: transparent;
-border: none;
-color: white;
-font-size: 14px;
-position: relative;
-z-index: 1;
+  padding: 5px;
+  cursor: pointer;
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 14px;
+  position: relative;
+  z-index: 1;
 `;
 const Container = styled.div`
   display: flex;
