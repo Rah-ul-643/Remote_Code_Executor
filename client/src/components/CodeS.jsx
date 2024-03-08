@@ -14,6 +14,7 @@ import 'ace-builds/src-noconflict/mode-csharp';
 import 'ace-builds/src-noconflict/mode-markdown';
 import 'ace-builds/src-noconflict/theme-twilight';
 import ace from 'ace-builds';
+import ChatBox from "./ChatBox";
 ace.config.set('workerPath', process.env.PUBLIC_URL + '/ace-builds/src-noconflict');
 
 const Container = styled.div`
@@ -622,7 +623,8 @@ const CodeS = () => {
                             borderRadius: '5px',
                             border: '1px solid #ccc',
                             width: '100%',
-                            boxSizing: 'border-box'
+                            boxSizing: 'border-box',
+                            outline:'none'
                           }}
                         />
                         <Button>Join Room</Button>
@@ -699,6 +701,8 @@ const CodeS = () => {
         <MainButton>
           <ButtonContainer>   <Button onClick={submitHandler}>Run</Button>   </ButtonContainer>
         </MainButton>
+
+        <ChatBox/>
 
       </Main>
     </Wrappper>
