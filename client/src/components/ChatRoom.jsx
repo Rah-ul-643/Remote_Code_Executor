@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState,useEffect,useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from "styled-components";
 import toast from 'react-hot-toast';
 import { mobile } from "./../responsive";
@@ -35,7 +35,7 @@ ${mobile({ width: "50%" })};
 `;
 
 const ChatRoom = () => {
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
     const token = localStorage.getItem("token");
@@ -53,10 +53,11 @@ const ChatRoom = () => {
   };
 
   // room
-  const [room, setRoom] = useState('');
+
   const [username, setUsername] = useState(window.localStorage.getItem('username') || '');
-  const [usernameSaved, setUsernameSaved] = useState(window.localStorage.getItem('usernameSaved') ||false);
-  const [roomIDSaved, setRoomIDSaved] = useState(window.localStorage.getItem('roomIDSaved') || false);
+  const [usernameSaved, setUsernameSaved] = useState(window.localStorage.getItem('usernameSaved') || false);
+
+
   const setUsernameHandler = () => {
     if (username === '') {
       toast.error('Username cannot be empty');
@@ -68,56 +69,72 @@ const ChatRoom = () => {
     setUsernameSaved(true);
     toast.success('Username updated');
   }
-  const editUsernameHandler=()=>{
+  const editUsernameHandler = () => {
     window.localStorage.removeItem('username');
     window.localStorage.removeItem('usernameSaved');
     setUsernameSaved(false);
   }
 
-  const [roomID, setRoomID] = useState("");
+  const [roomID, setRoomID] = useState(window.localStorage.getItem('roomID') || null);
   const [inputText, setInputText] = useState("");
   const [roomIdDisplay, setRoomIdDisplay] = useState("");
-  const [roomInfoSec, setRoomInfoSec] = useState("");
+  const [roomInfoSec, setRoomInfoSec] = useState([]);
   const [newUserSocketID, setNewUserSocketID] = useState(null);
-  const socket = useRef();
 
-  useEffect(() => {
-    socket.current = io();
-    socket.current.on('status-message', (message, code) => {
-      setRoomIdDisplay(message);
-    });
-    socket.current.on('new-socket-join-request', (requestingUserName, socketID) => {
-      setNewUserSocketID(socketID);
-      setRoomInfoSec(prevState => prevState + `<div id="accessQuestion" class="text-2xl font-bold"><h2>${requestingUserName} wants to join. Grant Permission?</h2><input type="radio" name="access" value="1" onclick="setAccess(true)"><label for="1">Yes</label><input type="radio" name="access" value="0" onclick="setAccess(false)"><label for="0">No</label></div>`);
-    });
-    socket.current.on('access-status', (accessGranted) => {
-      if (accessGranted) {
-        setRoomIdDisplay("Access Granted.");
-        setTimeout(() => {
-          socket.current.emit('join-room', roomID, username);
-        }, 1000);
-      } else {
-        setRoomIdDisplay("Access Denied.");
-      }
-    });
-    socket.current.on('receive-code', (code) => {
-      setInputText(code);
-    });
-    socket.current.on('display-sockets', (sockets) => {
-      let htmlContent = `<h1 class="font-bold text-xl">Participants: (${sockets.length}) </h1>`;
-      sockets.forEach(object => {
-        let color = object.status === 'online' ? '#0ee00b;' : '#ea0b0b;';
-        htmlContent += `<h2 class="font-semibold text-lg">${object.username} <span id=${object.socketID}> <i class="fa-solid fa-circle" style="color: ${color}"></i> </span> </h2>`;
-      });
-      setRoomInfoSec(htmlContent);
-    });
-    socket.current.on('offline-socket', (id) => {
-      document.getElementById(id).innerHTML = `<i class="fa-solid fa-circle" style="color: #ea0b0b;" ></i>`;
-    });
-    window.addEventListener('beforeunload', (event) => {
-      socket.current.emit('disconnection', roomID);
-    });
-  }, []);
+
+
+  const socket = io('http://localhost:4000');
+
+  socket.on('status-message', (message, code) => {
+    setRoomIdDisplay(message);
+  });
+
+
+  socket.on('new-socket-join-request', (requestingUserName, socketID) => {
+    setNewUserSocketID(socketID);
+    setRoomInfoSec(prevState => prevState + `<div id="accessQuestion" class="text-2xl font-bold"><h2>${requestingUserName} wants to join. Grant Permission?</h2><input type="radio" name="access" value="1" onclick="setAccess(true)"><label for="1">Yes</label><input type="radio" name="access" value="0" onclick="setAccess(false)"><label for="0">No</label></div>`);
+  });
+
+
+  socket.on('access-status', (accessGranted) => {
+    if (accessGranted) {
+      setRoomIdDisplay("Access Granted.");
+      setTimeout(() => {
+        socket.emit('join-room', roomID, username);
+      }, 1000);
+    } else {
+      setRoomIdDisplay("Access Denied.");
+    }
+  });
+
+
+  socket.on('receive-code', (code) => {
+    setInputText(code);
+  });
+
+
+  socket.on('display-sockets', (sockets) => {
+    // let htmlContent = `<h1 class="font-bold text-xl">Participants: (${sockets.length}) </h1>`;
+    // sockets.forEach(object => {
+    //   let color = object.status === 'online' ? '#0ee00b;' : '#ea0b0b;';
+    //   htmlContent += `<h2 class="font-semibold text-lg">${object.username} <span id=${object.socketID}> <i class="fa-solid fa-circle" style="color: ${color}"></i> </span> </h2>`;
+    // });
+    console.log(sockets);
+    setRoomInfoSec(sockets);
+
+
+  });
+
+
+  socket.on('offline-socket', (id) => {
+    document.getElementById(id).innerHTML = `<i class="fa-solid fa-circle" style="color: #ea0b0b;" ></i>`;
+  });
+
+
+  window.addEventListener('beforeunload', (event) => {
+    socket.emit('disconnection', roomID);
+  });
+
 
   const createRoom = () => {
     const chars = "abcdefghijklmnopqrstuvwxyz1234567890.#$%!~_-";
@@ -127,102 +144,126 @@ const ChatRoom = () => {
     }
     setRoomID(id);
     console.log(roomID);
-    socket.current.emit("create-room", roomID);
-    socket.current.emit('join-room', roomID, username);
+    socket.emit("create-room", roomID);
+    socket.emit('join-room', roomID, username);
+    setRoomID(id);
+    window.localStorage.setItem('roomID', id);
   }
 
+
   const setAccess = (accessGranted) => {
-    socket.current.emit('access-status', newUserSocketID, accessGranted);
+    socket.emit('access-status', newUserSocketID, accessGranted);
     if (accessGranted) {
       const code = inputText;
-      socket.current.emit('display-initial-code', newUserSocketID, code);
+      socket.emit('display-initial-code', newUserSocketID, code);
     } else {
       document.getElementById("accessQuestion").remove();
     }
   }
 
-  const joinRoom = (id) => {
-    socket.current.emit('request-join-access', socket.current.id, roomID, username);
-    setRoomIdDisplay(`<h1 class="text-3xl">Requested for access...Please wait.</h1>`);
-    setRoomIDSaved(true);
-    window.localStorage.setItem('roomIDSaved', true);
+  const joinRoom = (e) => {
+    e.preventDefault();
+    const id= roomRef.current;
+    setRoomID(id);
+    socket.emit('request-join-access', socket.id, roomID, username);
+    toast.loading("Requested for access...");
+
     window.localStorage.setItem('roomID', roomID);
   }
 
   const sendInput = () => {
     const code = inputText;
-    socket.current.emit('send-code', code, roomID);
+    socket.emit('send-code', code, roomID);
   }
 
   const leaveRoom = () => {
     setRoomInfoSec("");
     setRoomIdDisplay("");
-    socket.current.emit('leave-room', roomID, socket.current.id);
+    socket.emit('leave-room', roomID, socket.id);
     setRoomID("");
   }
+  // ref for room id
+  const roomRef = useRef(null);
+
   return (
     <div>
-        
-        <Button onClick={openModal}>Rooms</Button>
-            {isOpen && (
-              <ModalBackground id="modal-background" onClick={closeModal}>
-                <ModalContent>
-                    <div>Room id: {roomIdDisplay}</div>
-                  {!roomIDSaved ? (
-                    !usernameSaved ? (
-                      <>
-                      <h2>Select a username to join rooms</h2>
-                      <input
-                          type="text"
-                          placeholder="Enter Username"
-                          value={username}
-                          onChange={(e) => setUsername(e.target.value)}
-                          style={{
-                            padding: '10px',
-                            fontSize: '16px',
-                            borderRadius: '5px',
-                            border: '1px solid #ccc',
-                            width: '90%',
-                            boxSizing: 'border-box',
-                            outline:'none'
-                          }}
-                        />
-                        <Button onClick={setUsernameHandler}>Submit</Button>
-                      </>
-                    ) :
-                    <>
-                      <h1>Rooms</h1>
-                      <div style={{display:'flex',justifyContent:'center',alignItems:'center',gap:'1rem'}}>
-                        <p>Current Username: {username} </p>
-                        <Button onClick={editUsernameHandler}>Edit</Button>
-                      </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '0.1rem' }}>
-                        <input
-                          type="text"
-                          placeholder="Enter Room ID"
-                          value={room}
-                          onChange={(e) => setRoom(e.target.value)}
-                          style={{
-                            padding: '10px',
-                            fontSize: '16px',
-                            borderRadius: '5px',
-                            border: '1px solid #ccc',
-                            width: '100%',
-                            boxSizing: 'border-box',
-                            outline:'none'
-                          }}
-                        />
-                        <Button>Join Room</Button>
-                        <p>OR</p>
-                        <Button onClick={createRoom}>Create Room</Button>
-                      </div>
-                    </>
-                  ) : (
-                    <h1>Models</h1>
-                  )}
-                </ModalContent>
-              </ModalBackground>
+
+      <Button onClick={openModal}>Rooms</Button>
+      {isOpen && (
+        <ModalBackground id="modal-background" onClick={closeModal}>
+          <ModalContent>
+            <div>Room id: {roomIdDisplay}</div>
+            {!roomID ? (
+              !usernameSaved ? (
+                <>
+                  <h2>Select a username to join rooms</h2>
+                  <input
+                    type="text"
+                    placeholder="Enter Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    style={{
+                      padding: '10px',
+                      fontSize: '16px',
+                      borderRadius: '5px',
+                      border: '1px solid #ccc',
+                      width: '90%',
+                      boxSizing: 'border-box',
+                      outline: 'none'
+                    }}
+                  />
+                  <Button onClick={setUsernameHandler}>Submit</Button>
+                </>
+              ) :
+                <>
+                  <h1>Rooms</h1>
+                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1rem' }}>
+                    <p>Current Username: {username} </p>
+                    <Button onClick={editUsernameHandler}>Edit</Button>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '0.1rem' }}>
+                    <input
+                      type="text"
+                      placeholder="Enter Room ID"
+                      value={roomID}
+                      ref={roomRef}
+
+                      style={{
+                        padding: '10px',
+                        fontSize: '16px',
+                        borderRadius: '5px',
+                        border: '1px solid #ccc',
+                        width: '100%',
+                        boxSizing: 'border-box',
+                        outline: 'none'
+                      }}
+                    />
+                    <Button onClick={joinRoom}>Join Room</Button>
+                    <p>OR</p>
+                    <Button onClick={createRoom}>Create Room</Button>
+                  </div>
+                </>
+            ) : (
+              <div>
+                <h1>Participants</h1>
+                <div>
+                  {roomInfoSec.map((user, index) => (
+                    <div key={index}>
+                      <h2>{user.username}</h2>
+                      <p>Status: {user.status}</p>
+                      {/* You can uncomment and modify the color logic here if needed */}
+                      {/* let color = user.status === 'online' ? '#0ee00b' : '#ea0b0b'; */}
+                      {/* <i className="fa-solid fa-circle" style={{ color: color }}></i> */}
+                    </div>
+                  ))}
+                </div>
+
+
+              </div>
             )}
+          </ModalContent>
+        </ModalBackground>
+      )}
     </div>
   )
 }

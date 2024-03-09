@@ -71,6 +71,7 @@ io.on('connection', (socket) => {
   })
 
   socket.on('leave-room',(roomID,socketID)=>{
+    console.log("leave room api hit");
     leaveRoom(socket,roomID,socketID);
   })
 

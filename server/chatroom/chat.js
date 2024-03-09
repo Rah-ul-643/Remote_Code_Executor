@@ -1,5 +1,5 @@
 
-const roomDetails={'room1':[{'username':'xyz','socketID':'1234','status':'online'}],'room2':[{},{},]}    // format--> {'room1':[{'username':'xyz','socketID':'1234',status:'online'}],'room2':[{},{},]};
+const roomDetails={}    // format--> {'room1':[{'username':'xyz','socketID':'1234',status:'online'}],'room2':[{},{},]};
 const rooms=[];
 
 const createRoom= (roomID)=>{
