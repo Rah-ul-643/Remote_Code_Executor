@@ -75,10 +75,18 @@ const ChatRoom = () => {
     setUsernameSaved(false);
   }
 
+  const getLocalSockets= ()=>{
+    const localsockets=window.localStorage.getItem('sockets');
+    if (localsockets){
+      return JSON.parse(localsockets);
+    }
+    return [];
+  }
+
   const [roomID, setRoomID] = useState(window.localStorage.getItem('roomID') || null);
   const [inputText, setInputText] = useState("");
   const [roomIdDisplay, setRoomIdDisplay] = useState("");
-  const [roomInfoSec, setRoomInfoSec] = useState([]);
+  const [roomInfoSec, setRoomInfoSec] = useState( getLocalSockets()); 
   const [newUserSocketID, setNewUserSocketID] = useState(null);
 
 
@@ -89,10 +97,13 @@ const ChatRoom = () => {
     setRoomIdDisplay(message);
   });
 
+  const [requestWindow,setRequestWindow]=useState(false);
+
 
   socket.on('new-socket-join-request', (requestingUserName, socketID) => {
     setNewUserSocketID(socketID);
-    setRoomInfoSec(prevState => prevState + `<div id="accessQuestion" class="text-2xl font-bold"><h2>${requestingUserName} wants to join. Grant Permission?</h2><input type="radio" name="access" value="1" onclick="setAccess(true)"><label for="1">Yes</label><input type="radio" name="access" value="0" onclick="setAccess(false)"><label for="0">No</label></div>`);
+    setRequestWindow(true);
+    // setRoomInfoSec(prevState => prevState + `<div id="accessQuestion" class="text-2xl font-bold"><h2>${requestingUserName} wants to join. Grant Permission?</h2><input type="radio" name="access" value="1" onclick="setAccess(true)"><label for="1">Yes</label><input type="radio" name="access" value="0" onclick="setAccess(false)"><label for="0">No</label></div>`);
   });
 
 
@@ -119,10 +130,9 @@ const ChatRoom = () => {
     //   let color = object.status === 'online' ? '#0ee00b;' : '#ea0b0b;';
     //   htmlContent += `<h2 class="font-semibold text-lg">${object.username} <span id=${object.socketID}> <i class="fa-solid fa-circle" style="color: ${color}"></i> </span> </h2>`;
     // });
-    console.log(sockets);
+
     setRoomInfoSec(sockets);
-
-
+    window.localStorage.setItem('sockets',JSON.stringify(sockets));
   });
 
 
@@ -130,10 +140,6 @@ const ChatRoom = () => {
     document.getElementById(id).innerHTML = `<i class="fa-solid fa-circle" style="color: #ea0b0b;" ></i>`;
   });
 
-
-  window.addEventListener('beforeunload', (event) => {
-    socket.emit('disconnection', roomID);
-  });
 
 
   const createRoom = () => {
@@ -143,10 +149,10 @@ const ChatRoom = () => {
       id += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     setRoomID(id);
-    console.log(roomID);
-    socket.emit("create-room", roomID);
-    socket.emit('join-room', roomID, username);
-    setRoomID(id);
+    console.log(id);
+    socket.emit("create-room", id);
+    socket.emit('join-room', id, username);
+
     window.localStorage.setItem('roomID', id);
   }
 
@@ -162,13 +168,14 @@ const ChatRoom = () => {
   }
 
   const joinRoom = (e) => {
+    console.log("join room");
     e.preventDefault();
-    const id= roomRef.current;
+    const id= roomRef.current.value;
     setRoomID(id);
-    socket.emit('request-join-access', socket.id, roomID, username);
+    socket.emit('request-join-access', socket.id, id, username);
     toast.loading("Requested for access...");
 
-    window.localStorage.setItem('roomID', roomID);
+    window.localStorage.setItem('roomID', id);
   }
 
   const sendInput = () => {
@@ -187,12 +194,11 @@ const ChatRoom = () => {
 
   return (
     <div>
-
       <Button onClick={openModal}>Rooms</Button>
       {isOpen && (
         <ModalBackground id="modal-background" onClick={closeModal}>
           <ModalContent>
-            <div>Room id: {roomIdDisplay}</div>
+            <div>  </div>
             {!roomID ? (
               !usernameSaved ? (
                 <>
@@ -245,7 +251,15 @@ const ChatRoom = () => {
                 </>
             ) : (
               <div>
+
+                <div>
+                  <h3>Pending Request from {newUserSocketID}</h3>
+                  <Button>Access</Button>
+                  <Button>Deny</Button>
+                </div>
                 <h1>Participants</h1>
+                <h2>Room ID: {roomID}</h2>
+                <h2>Username: {username}</h2>
                 <div>
                   {roomInfoSec.map((user, index) => (
                     <div key={index}>

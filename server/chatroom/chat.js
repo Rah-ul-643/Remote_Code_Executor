@@ -27,7 +27,7 @@ const sendRoomDetails= (io,socket,roomID,userName)=>{
   const sockets= roomDetails.roomID;
 
   io.to(roomID).emit('display-sockets',sockets);
-  const message= "User Name: "+userName +"<br> Joined room: "+ roomID;
+  const message= "User Name: "+userName +" Joined room: "+ roomID;
   socket.emit('status-message',message,200);
 
 }
