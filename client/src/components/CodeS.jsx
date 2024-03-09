@@ -15,6 +15,7 @@ import 'ace-builds/src-noconflict/mode-markdown';
 import 'ace-builds/src-noconflict/theme-twilight';
 import ace from 'ace-builds';
 import ChatBox from "./ChatBox";
+import ChatRoom from "./ChatRoom";
 ace.config.set('workerPath', process.env.PUBLIC_URL + '/ace-builds/src-noconflict');
 
 const Container = styled.div`
@@ -344,29 +345,6 @@ ${mobile({ fontSize: "10px" })};
 
 `;
 
-const ModalBackground = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-`;
-
-const ModalContent = styled.div`
-  width: 500px;
-  background: #242424;
-  padding: 20px;
-  border-radius: 10px;
-`;
-
-
-
-
 
 const CodeS = () => {
 
@@ -539,25 +517,7 @@ const CodeS = () => {
 
     reader.readAsText(file); // Read file as text
   };
-  const [isOpen, setIsOpen] = useState(false);
-
-  const openModal = () => {
-    const token = localStorage.getItem("token");
-    if (token === null) {
-      window.location.href = "/login";
-      toast.error("Please login to continue");
-    }
-    setIsOpen(true);
-  };
-
-  const closeModal = (e) => {
-    if (e.target.id === 'modal-background') {
-      setIsOpen(false);
-    }
-  };
-
-  // room
-  const [room, setRoom] = useState('');
+  
 
 
 
@@ -604,40 +564,9 @@ const CodeS = () => {
             </MainControlModel>
           </MainControlSec>
           <MainControlSec>
-            <Button onClick={openModal}>Open Modal</Button>
-            {isOpen && (
-              <ModalBackground id="modal-background" onClick={closeModal}>
-                <ModalContent>
-                  {!room ? (
-                    <>
-                      <h1>Rooms</h1>
-                      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '0.1rem' }}>
-                        <input
-                          type="text"
-                          placeholder="Enter Room ID"
-                          value={room}
-                          onChange={(e) => setRoom(e.target.value)}
-                          style={{
-                            padding: '10px',
-                            fontSize: '16px',
-                            borderRadius: '5px',
-                            border: '1px solid #ccc',
-                            width: '100%',
-                            boxSizing: 'border-box',
-                            outline:'none'
-                          }}
-                        />
-                        <Button>Join Room</Button>
-                        <p>OR</p>
-                        <Button>Create Room</Button>
-                      </div>
-                    </>
-                  ) : (
-                    <h1>Models</h1>
-                  )}
-                </ModalContent>
-              </ModalBackground>
-            )}
+
+            <ChatRoom />
+            
 
           </MainControlSec>
         </MainControl>
