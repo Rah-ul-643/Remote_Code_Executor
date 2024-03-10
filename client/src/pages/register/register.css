@@ -35,8 +35,13 @@
   outline: none;
 }
 
+.otpLabel{
+  margin-right: 10px;
+}
+
 .registerButton {
   margin-top: 20px;
+  margin-left: 10px;
   cursor: pointer;
   background-color: teal;
   color: white;

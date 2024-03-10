@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import video from '../video/space.mp4';
-import {Link} from  'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -50,7 +50,7 @@ const VideoContainer = styled.div`
   display: flex;
 `;
 
-const ButtonContainer=styled.button`
+const ButtonContainer = styled.button`
 border-radius:30px;
 width:150px;
 padding:10px;
@@ -61,7 +61,7 @@ text-decoration:none;
 cursor:pointer;
 z-index:2;`;
 
-const Nav=styled.div`
+const Nav = styled.div`
 display:flex;
 justify-content:space-between;
 gap:50px;
@@ -81,22 +81,22 @@ const logoutHandler = () => {
 const Front = () => {
   return (
     <Container>
-    <Nav>
-      { !token &&
-        <div>
-        <Link to='/login'>    <ButtonContainer>Login</ButtonContainer></Link>
-        <Link to='/register'>    <ButtonContainer>Register</ButtonContainer></Link>
-      </div>
-      }
-      {
-        token &&
-        <div>
-           <ButtonContainer onClick={logoutHandler}>Logout</ButtonContainer>
-        </div>
-         
-      }
-      
-    </Nav>
+      <Nav>
+        {!token &&
+          <div>
+            <Link to='/login'>    <ButtonContainer>Login</ButtonContainer></Link>
+            <Link to='/register'>    <ButtonContainer>Register</ButtonContainer></Link>
+          </div>
+        }
+        {
+          token &&
+          <div>
+            <ButtonContainer onClick={logoutHandler}>Logout</ButtonContainer>
+          </div>
+
+        }
+
+      </Nav>
       <VideoContainer>
         <video width="100%" height="100%" autoPlay loop muted playsInline >
           <source src={video} type="video/mp4" />
@@ -106,9 +106,9 @@ const Front = () => {
       <InfoContainer>
         <Title>CodeNova</Title>
         <Desc>Master Algorithms, Unleash Creativity: Begin Your Coding Odyssey Here</Desc>
-    <Link to='/start'>    <ButtonContainer>Start Now</ButtonContainer></Link>
+        <Link to='/start'>    <ButtonContainer>Start Now</ButtonContainer></Link>
       </InfoContainer>
-      </Container>
+    </Container>
   );
 };
 

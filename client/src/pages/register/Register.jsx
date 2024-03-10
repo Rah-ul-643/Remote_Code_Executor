@@ -56,11 +56,13 @@ const submitHandler = (e) => {
         <input className="registerInput" name="password" onChange={changeHandler} value={formData.password} type="password" placeholder="Enter your password..." />
         <label>Confirm Password</label>
         <input className="registerInput" name="password2" onChange={changeHandler} value={formData.password2} type="password" placeholder="Confirm your password..." />
+        
         <div>
-          <label>OTP</label>
+          <label className="otpLabel">OTP</label>
           <input className="registerInput" name="otp" value={formData.otp} onChange={changeHandler} type="text" placeholder="Enter OTP..." />
-          <button className="otpButton" onClick={sendOtpHandler}>Send OTP</button>
+          <button className="registerButton" onClick={sendOtpHandler}>Send OTP</button>
         </div>
+       
         <button className="registerButton" type="submit">Register</button>
 
       </form>
