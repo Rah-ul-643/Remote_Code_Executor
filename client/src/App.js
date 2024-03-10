@@ -4,12 +4,12 @@ import Front from "./pages/front";
 import CodeS from "./components/CodeS";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import { FormProvider } from "./utility/FormContext";
+
 
 function App() {
   const user=false
   return (
-    <FormProvider>
+
     <Router>
          <Routes>
          <Route path ="/" element={<Front/>} > </Route>
@@ -19,7 +19,6 @@ function App() {
 
          </Routes>
        </Router>
-       </FormProvider>
   );
 }
 

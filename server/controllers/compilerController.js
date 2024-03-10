@@ -22,7 +22,7 @@ const compileCode= (req,res)=>{
     
         }
     
-        else if (language==="cpp"){
+        else if (language==="cpp" || language=='c'){
     
             compileCppCode(code,input)
                 .then( (output) => res.status(200).json(output) )
