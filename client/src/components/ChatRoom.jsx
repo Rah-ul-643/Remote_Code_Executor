@@ -1,9 +1,9 @@
-import React from 'react'
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from "styled-components";
 import toast from 'react-hot-toast';
 import { mobile } from "./../responsive";
 import io from 'socket.io-client';
+
 
 const ModalBackground = styled.div`
   position: fixed;
@@ -34,8 +34,11 @@ ${mobile({ width: "50%" })};
 
 `;
 
+
+
 const ChatRoom = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [socket, setSocket] = useState(null);
 
   const openModal = () => {
     const token = localStorage.getItem("token");
@@ -75,72 +78,41 @@ const ChatRoom = () => {
     setUsernameSaved(false);
   }
 
-  const getLocalSockets= ()=>{
-    const localsockets=window.localStorage.getItem('sockets');
-    if (localsockets){
+  const getLocalSockets = () => {
+    const localsockets = window.localStorage.getItem('sockets');
+    if (localsockets) {
       return JSON.parse(localsockets);
     }
     return [];
   }
 
   const [roomID, setRoomID] = useState(window.localStorage.getItem('roomID') || null);
-  const [inputText, setInputText] = useState("");
+  // const [inputText, setInputText] = useState("");
   const [roomIdDisplay, setRoomIdDisplay] = useState("");
-  const [roomInfoSec, setRoomInfoSec] = useState( getLocalSockets()); 
+  const [roomInfoSec, setRoomInfoSec] = useState(getLocalSockets());
   const [newUserSocketID, setNewUserSocketID] = useState(null);
 
+  // ref for room id
+  const roomRef = useRef(null);
 
+  useEffect(() => {
+    if (socket) {
 
-  const socket = io('http://localhost:4000');
+      socket.on('status-message', (message, code) => {
+        setRoomIdDisplay(message);
+      });
 
-  socket.on('status-message', (message, code) => {
-    setRoomIdDisplay(message);
-  });
+      socket.on('display-sockets', (sockets) => {
+        setRoomInfoSec(sockets);
+        window.localStorage.setItem('sockets', JSON.stringify(sockets));
+      });
 
-  const [requestWindow,setRequestWindow]=useState(false);
+      socket.on('offline-socket', (id) => {
+        document.getElementById(id).innerHTML = `<i class="fa-solid fa-circle" style="color: #ea0b0b;" ></i>`;
+      });
 
-
-  socket.on('new-socket-join-request', (requestingUserName, socketID) => {
-    setNewUserSocketID(socketID);
-    setRequestWindow(true);
-    // setRoomInfoSec(prevState => prevState + `<div id="accessQuestion" class="text-2xl font-bold"><h2>${requestingUserName} wants to join. Grant Permission?</h2><input type="radio" name="access" value="1" onclick="setAccess(true)"><label for="1">Yes</label><input type="radio" name="access" value="0" onclick="setAccess(false)"><label for="0">No</label></div>`);
-  });
-
-
-  socket.on('access-status', (accessGranted) => {
-    if (accessGranted) {
-      setRoomIdDisplay("Access Granted.");
-      setTimeout(() => {
-        socket.emit('join-room', roomID, username);
-      }, 1000);
-    } else {
-      setRoomIdDisplay("Access Denied.");
     }
-  });
-
-
-  socket.on('receive-code', (code) => {
-    setInputText(code);
-  });
-
-
-  socket.on('display-sockets', (sockets) => {
-    // let htmlContent = `<h1 class="font-bold text-xl">Participants: (${sockets.length}) </h1>`;
-    // sockets.forEach(object => {
-    //   let color = object.status === 'online' ? '#0ee00b;' : '#ea0b0b;';
-    //   htmlContent += `<h2 class="font-semibold text-lg">${object.username} <span id=${object.socketID}> <i class="fa-solid fa-circle" style="color: ${color}"></i> </span> </h2>`;
-    // });
-
-    setRoomInfoSec(sockets);
-    window.localStorage.setItem('sockets',JSON.stringify(sockets));
-  });
-
-
-  socket.on('offline-socket', (id) => {
-    document.getElementById(id).innerHTML = `<i class="fa-solid fa-circle" style="color: #ea0b0b;" ></i>`;
-  });
-
-
+  }, [socket]); 
 
   const createRoom = () => {
     const chars = "abcdefghijklmnopqrstuvwxyz1234567890.#$%!~_-";
@@ -149,39 +121,44 @@ const ChatRoom = () => {
       id += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     setRoomID(id);
-    console.log(id);
-    socket.emit("create-room", id);
-    socket.emit('join-room', id, username);
 
+    const newSocket = io('http://localhost:4000');
+    setSocket(newSocket);
+
+    newSocket.emit("create-room", id);
+    newSocket.emit('join-room', id, username);
+    
     window.localStorage.setItem('roomID', id);
   }
 
-
-  const setAccess = (accessGranted) => {
-    socket.emit('access-status', newUserSocketID, accessGranted);
-    if (accessGranted) {
-      const code = inputText;
-      socket.emit('display-initial-code', newUserSocketID, code);
-    } else {
-      document.getElementById("accessQuestion").remove();
-    }
-  }
 
   const joinRoom = (e) => {
     console.log("join room");
     e.preventDefault();
-    const id= roomRef.current.value;
-    setRoomID(id);
-    socket.emit('request-join-access', socket.id, id, username);
-    toast.loading("Requested for access...");
 
+    const id = roomRef.current.value;
+    setRoomID(id);
+
+    const newSocket = io('http://localhost:4000');
+    setSocket(newSocket);
+
+    newSocket.emit('join-room', id, username);
+    // newSocket.emit('request-join-access', newSocket.id, id, username);
+    
+    // toast.loading("Requested for access...");
     window.localStorage.setItem('roomID', id);
   }
 
-  const sendInput = () => {
+   const sendInput = (inputText) => {
     const code = inputText;
     socket.emit('send-code', code, roomID);
   }
+ 
+
+  socket.on('receive-code',(code)=>{
+    console.log(code);
+    setInputText(code);
+})
 
   const leaveRoom = () => {
     setRoomInfoSec("");
@@ -189,8 +166,7 @@ const ChatRoom = () => {
     socket.emit('leave-room', roomID, socket.id);
     setRoomID("");
   }
-  // ref for room id
-  const roomRef = useRef(null);
+  
 
   return (
     <div>
@@ -252,11 +228,11 @@ const ChatRoom = () => {
             ) : (
               <div>
 
-                <div>
+                {/* <div>
                   <h3>Pending Request from {newUserSocketID}</h3>
-                  <Button>Access</Button>
-                  <Button>Deny</Button>
-                </div>
+                  <Button onClick={setAccess(true)}>Access</Button>
+                  <Button onClick={setAccess(false)}>Deny</Button>
+                </div> */}
                 <h1>Participants</h1>
                 <h2>Room ID: {roomID}</h2>
                 <h2>Username: {username}</h2>
@@ -280,6 +256,8 @@ const ChatRoom = () => {
       )}
     </div>
   )
+  
 }
+module.exports={sendInput};
+export default ChatRoom;
 
-export default ChatRoom

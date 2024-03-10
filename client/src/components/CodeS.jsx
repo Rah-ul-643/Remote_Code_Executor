@@ -410,6 +410,7 @@ const CodeS = () => {
     // Use newValue and inputName here
     // For example, if you're updating the state, it would look something like this:
     setFormData(prevState => ({ ...prevState, [inputName]: newValue }));
+    
 
   };
   const submitHandler = async (e) => {
