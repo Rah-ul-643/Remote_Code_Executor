@@ -33,50 +33,6 @@ const Wrappper = styled.div`
   gap: 20px;
 `;
 
-const Sidebar = styled.div`
-  padding-top: 50px;
-  display: flex;
-  height: 90%;
-  flex: 0.7;
-  justify-content: flex-start;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 10px;
-`;
-
-const SidebarItem = styled.div`
-  height: 10%;
-  display: flex;
-  width: 100%;
-  background-color: #21222D;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-`;
-
-const SidebarHead = styled.div`
-  height: 10%;
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: white;
-`;
-
-const SidebarButton = styled.button`
-  padding: 10px;
-  width: 80%;
-  background-color: #914EC2;
-  border-radius: 10px;
-  border: none;
-  color: white;
-`;
-
-const CurrentPrompt = styled.h4`
-  font-weight: lighter;
-`;
 
 const Main = styled.div`
   display: flex;
