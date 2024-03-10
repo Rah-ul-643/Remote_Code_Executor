@@ -369,8 +369,12 @@ const CodeS = () => {
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
+    if(!file){
+      return;
+    }
     const reader = new FileReader();
     const fileType = file.name.split('.').pop();
+  
 
     if (fileType !== fileExtensions[selectedLanguage]) {
       toast.error("File type not supported");
