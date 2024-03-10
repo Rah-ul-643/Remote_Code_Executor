@@ -48,25 +48,40 @@ To run the project locally, you need to have Node.js and npm installed.
    ```
    git clone https://github.com/Rah-ul-643/Remote_Code_Executor
    ```
-3. Navigate to the `client` directory and run `npm install` to install the client's dependencies.
+2. Navigate to the `client` directory and run `npm install` to install the client's dependencies.
    ```
    cd client
    ```
    ```
    npm install
    ```
-5. Run `npm start` to start the client. It will be available at http://localhost:3000.
+3. Run `npm start` to start the client. It will be available at http://localhost:3000.
    ```
    npm start
    ```
-7. Navigate to the `server` directory and run `npm install` to install the server's dependencies.
+4. Navigate to the `server` directory and run `npm install` to install the server's dependencies.
    ```
    cd server
    ```
    ```
    npm install
    ```
-9. Run `node server.js` to start the server.
+5. Build the Docker images
+    
+    ```bash
+      cd Dockerfiles
+    ```
+    
+    ```bash
+      sudo docker build -t java:v1 ./java 
+    ```
+    ```bash
+      sudo docker build -t cpp:v1 ./cpp 
+    ```
+    ```bash
+      sudo docker build -t py:v1 ./python 
+    ```
+6. Run `node server.js` to start the server.
     ```
    node server.js
     ```
@@ -74,7 +89,6 @@ To run the project locally, you need to have Node.js and npm installed.
 ## Screenshots
 [Insert Screenshots]
 
-## Demo Video
 ## Contributing
 
 Contributions are welcome. Please make sure to update tests as appropriate.
@@ -84,5 +98,3 @@ Contributions are welcome. Please make sure to update tests as appropriate.
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-
