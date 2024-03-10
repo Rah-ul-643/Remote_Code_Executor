@@ -86,10 +86,6 @@ io.on('connection', (socket) => {
 app.use('/api/v1/code',codeRoutes);
 app.use('/api/v1/auth',userRoutes);
 
-app.get('/',(req,res)=>{
-    res.sendFile('index.html');
-});
-
 
 server.listen(4000,()=>{
     console.log(`server listening on port: 4000`);
