@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import toast from "react-hot-toast";
-import { mobile } from "./../responsive";
+import { useMediaQuery } from 'react-responsive'
 import { compileCode } from "../services/codeAPIs";
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-javascript';
@@ -14,6 +14,17 @@ import ace from 'ace-builds';
 import ChatBox from "./ChatBox";
 
 ace.config.set('workerPath', process.env.PUBLIC_URL + '/ace-builds/src-noconflict');
+
+const sizes = {
+  mobile: '600px',
+  // other sizes can be defined here
+}
+
+const mobile = (styles) => {
+  return `@media (max-width: ${sizes.mobile}) {
+    ${styles}
+  }`
+}
 
 const Container = styled.div`
   color: white;
@@ -275,6 +286,7 @@ const CustomSelect = styled.select`
 `;
 
 const CodeS = () => {
+
   const [formData, setFormData] = useState({
     code: "print('Hello, World!')",
     input: "",
