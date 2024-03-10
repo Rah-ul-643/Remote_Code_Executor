@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './ChatBox.css'; // Import your CSS file for styling
+import './ChatBox.css'; 
 import axios from 'axios';
 
 
@@ -11,10 +11,6 @@ const ChatBox = () => {
         setIsOpen(!isOpen);
     };
     const [thinking, setThinking] = useState(false);
-
-    const handleBackgroundInteraction = () => {
-        // Implement background interaction logic here
-    };
     const [chatHistory, setChatHistory] = useState([]);
 
     const askAI = async() => {
@@ -37,7 +33,6 @@ const ChatBox = () => {
         e.preventDefault();
         const prompt = message;
         chatHistory.push(prompt);
-        // 
         setThinking(true);
         // send prompt logic 
         const response = await askAI();
@@ -65,7 +60,6 @@ const ChatBox = () => {
                             </div>
                         ))
                     }
-                    {/* Thinking  */}
                     
                     {/* Send message  */}
                     <div className='send-msg'>
