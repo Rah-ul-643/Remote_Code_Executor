@@ -90,7 +90,10 @@ const Front = () => {
       }
       {
         token &&
-          <ButtonContainer onClick={logoutHandler}>Logout</ButtonContainer>
+        <div>
+           <ButtonContainer onClick={logoutHandler}>Logout</ButtonContainer>
+        </div>
+         
       }
       
     </Nav>

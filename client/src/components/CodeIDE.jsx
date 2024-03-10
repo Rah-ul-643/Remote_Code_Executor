@@ -11,11 +11,9 @@ import 'ace-builds/src-noconflict/mode-csharp';
 import 'ace-builds/src-noconflict/mode-markdown';
 import 'ace-builds/src-noconflict/theme-twilight';
 import ace from 'ace-builds';
-import ChatBox from "./ChatBox";
+import ChatBox from "./ChatBot/ChatBox";
 
 ace.config.set('workerPath', process.env.PUBLIC_URL + '/ace-builds/src-noconflict');
-
-
 
 const Container = styled.div`
   color: white;
@@ -24,23 +22,24 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
-  height: 140vh;
+  height: 118vh;
   width: 100vw;
+  overflow:hidden;
 `;
 
 const Wrappper = styled.div`
+margin-top:-20vh;
   display: flex;
   height: 85%;
-  width: 98%;
-  gap: 20px;
+  width: 100%;
 `;
 
 
 const Main = styled.div`
   display: flex;
   height: 100%;
-  margin: 20px;
-  flex: 3;
+  margin-right:1vw;
+ width:100%;
   flex-direction: column;
   background-color: #21222D;
   justify-content: center;
@@ -55,7 +54,7 @@ const MainTop = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  flex: 1.5;
+  flex: 1;
   width: 90%;
   gap: 10px;
 `;
@@ -79,15 +78,15 @@ const MainTopText = styled.h2`
 `;
 
 const MainTopImage = styled.img`
-  height: 40vh;
-  width: 30vw;
+  height: 28vh;
+  width: 20vw;
   position: absolute;
-  margin-bottom: 40px;
+  margin-bottom: 0px;
   ${mobile({ height: "240px", width: "260px" })};
 `;
 
 const MainControl = styled.div`
-  flex: 0.5;
+  flex: 0.1;
   display: flex;
   justify-content: space-between;
   gap: 100px;
@@ -98,7 +97,7 @@ const MainControl = styled.div`
 `;
 
 const MainControlSec = styled.div`
-  flex: 1;
+  flex: 0.5;
   height: 100%;
   display: flex;
   justify-content: flex-start;
@@ -129,7 +128,7 @@ const MainControlModel = styled.p`
 `;
 
 const MainMid = styled.div`
-  flex: 1.1;
+  flex: 2;
   background-color: #171821;
   border-radius: 20px;
   width: 90%;
@@ -142,7 +141,7 @@ const MainMid = styled.div`
 `;
 
 const MainMid1 = styled.div`
-  flex: 4;
+  flex: 2;
   border-radius: 20px;
   width: 90%;
   display: flex;
@@ -151,6 +150,7 @@ const MainMid1 = styled.div`
   text-align: center;
   gap: 100px;
   ${mobile({ gap: "50px" })};
+
 `;
 
 const MainMidSec = styled.div`
@@ -160,9 +160,9 @@ const MainMidSec = styled.div`
   flex: 2;
   display: flex;
   flex-direction: column;
-  background-color: #171821;
   height: 100%;
   border-radius: 20px;
+  background-color: #171821;
 `;
 
 const MainMidSecIO = styled.div`
@@ -240,10 +240,10 @@ const MainMidTextArea = styled.textarea`
 `;
 
 const MainButton = styled.div`
-  flex: 0.5;
+  flex: 0.1;
   width: 90%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   text-align: center;
 `;
@@ -252,10 +252,11 @@ const ButtonContainer = styled.div`
   width: 30%;
   height: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   text-align: center;
   margin-bottom: 30px;
+
 `;
 
 const Button = styled.button`
@@ -265,6 +266,7 @@ const Button = styled.button`
   border-radius: 10px;
   border: none;
   ${mobile({ width: "50%" })};
+  cursor:pointer;
 `;
 
 const CustomSelect = styled.select`
@@ -277,7 +279,6 @@ const CustomSelect = styled.select`
 `;
 
 const CodeS = () => {
-
   const [formData, setFormData] = useState({
     code: "print('Hello, World!')",
     input: "",
@@ -388,14 +389,17 @@ const CodeS = () => {
     <Container>
       <Wrappper>
         <Main>
+
           <MainTop>
             <MainTopSec>
               <MainTopImage src="./astro3.png"></MainTopImage>
             </MainTopSec>
+
             <MainTopSec>
               <MainTopText>Your Code, Our Engine, Limitless Possibilities. <span style={{ fontWeight: 800 }}>CodeNova.</span></MainTopText>
             </MainTopSec>
           </MainTop>
+
           <MainControl>
             <MainControlSec>
               <MainControlButton onClick={resetHandler}>Reset</MainControlButton>
@@ -414,7 +418,12 @@ const CodeS = () => {
               </MainControlModel>
             </MainControlSec>
           </MainControl>
+
+
+
+
           <MainMid1>
+
             <MainMidSec>
               <MainMidSecTop>
                 <MainTab>
@@ -422,26 +431,29 @@ const CodeS = () => {
                 </MainTab>
               </MainMidSecTop>
               <MainMidSecBottom>
-                <AceEditor
-                  mode="python"
-                  theme="twilight"
-                  name="code"
-                  onChange={(newValue) => changeHandler(newValue, 'code')}
-                  editorProps={{ $blockScrolling: true }}
-                  width="100%"
-                  height="95%"
-                  value={formData.code}
-                  fontSize={16}
-                  setOptions={{
-                    enableBasicAutocompletion: true,
-                    enableLiveAutocompletion: true,
-                    enableSnippets: true,
-                    showLineNumbers: true,
-                    tabSize: 2,
-                  }}
-                />
+
+              <AceEditor
+  mode="python"
+  theme="twilight"
+  name="code"
+  onChange={(newValue) => changeHandler(newValue, 'code')}
+  editorProps={{ $blockScrolling: true, style: { fontFamily: 'Courier New', fontSize: 14, backgroundColor: 'red' } }}
+  width="100%"
+  height="95%"
+  value={formData.code}
+  fontSize={16}
+  setOptions={{
+    enableBasicAutocompletion: true,
+    enableLiveAutocompletion: true,
+    enableSnippets: true,
+    showLineNumbers: true,
+    tabSize: 2,
+  }}
+/>
+
               </MainMidSecBottom>
             </MainMidSec>
+
             <MainMidSecIO>
               <MainMidSecInp>
                 <MainMidSecTop>
@@ -473,11 +485,14 @@ const CodeS = () => {
               </MainMidSecInp>
             </MainMidSecIO>
           </MainMid1>
+
           <MainButton>
             <ButtonContainer>
               <Button onClick={submitHandler}>Run</Button>
             </ButtonContainer>
           </MainButton>
+
+
           <ChatBox />
         </Main>
       </Wrappper>

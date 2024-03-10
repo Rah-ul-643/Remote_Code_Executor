@@ -1,7 +1,7 @@
 
 body{
   background-color: #171821;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 @media (max-width: 750px) {
