@@ -149,16 +149,16 @@ const ChatRoom = () => {
     window.localStorage.setItem('roomID', id);
   }
 
-   const sendInput = (inputText) => {
-    const code = inputText;
-    socket.emit('send-code', code, roomID);
-  }
+//    const sendInput = (inputText) => {
+//     const code = inputText;
+//     socket.emit('send-code', code, roomID);
+//   }
  
 
-  socket.on('receive-code',(code)=>{
-    console.log(code);
-    setInputText(code);
-})
+//   socket.on('receive-code',(code)=>{
+//     console.log(code);
+//     setInputText(code);
+// })
 
   const leaveRoom = () => {
     setRoomInfoSec("");
@@ -258,6 +258,5 @@ const ChatRoom = () => {
   )
   
 }
-module.exports={sendInput};
 export default ChatRoom;
 

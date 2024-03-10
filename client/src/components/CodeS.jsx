@@ -16,6 +16,7 @@ import 'ace-builds/src-noconflict/theme-twilight';
 import ace from 'ace-builds';
 import ChatBox from "./ChatBox";
 import ChatRoom from "./ChatRoom";
+import { useFormContext } from '../utility/FormContext';
 ace.config.set('workerPath', process.env.PUBLIC_URL + '/ace-builds/src-noconflict');
 
 const Container = styled.div`
@@ -399,19 +400,18 @@ const CodeS = () => {
 
   //fadditon
 
-  const [formData, setFormData] = useState({
-    code: "print('Hello, World!')",
-    input: "",
-    language: "python",
-    output: "",
-  });
+  // const [formData, setFormData] = useState({
+  //   code: "print('Hello, World!')",
+  //   input: "",
+  //   language: "python",
+  //   output: "",
+  // });
+  const { formData, handleChange,setFormData } = useFormContext();
 
-  const changeHandler = (newValue, inputName) => {
-    // Use newValue and inputName here
-    // For example, if you're updating the state, it would look something like this:
-    setFormData(prevState => ({ ...prevState, [inputName]: newValue }));
+  const changeHandler = (e) => {
+    const { name, value } = e.target;
     
-
+    handleChange(value, name);
   };
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -566,7 +566,7 @@ const CodeS = () => {
           </MainControlSec>
           <MainControlSec>
 
-            <ChatRoom />
+            {/* <ChatRoom /> */}
             
 
           </MainControlSec>
