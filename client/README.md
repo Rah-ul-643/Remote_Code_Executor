@@ -18,7 +18,9 @@ This project is a web-based application that allows users to write, compile, and
 - The code execution happens asynchronously, allowing the server to handle multiple requests at the same time.
 
 ## Prerequisites
-[Insert Docker initializations if available (check repo for reference)]
+- Docker
+  ```     curl -fsSL https://get.docker.com -o get-docker.sh ```
+  ```     sudo sh get-docker.sh ```
 
 ## Project Structure
 
@@ -39,11 +41,22 @@ The server's source code is located in the `server` directory. The main entry po
 To run the project locally, you need to have Node.js and npm installed.
 
 1. Clone the repository.
+   ``` git clone https://github.com/Rah-ul-643/Remote_Code_Executor ```
 2. Navigate to the `client` directory and run `npm install` to install the client's dependencies.
+   ``` cd client ```
+   ``` npm install ```
 3. Run `npm start` to start the client. It will be available at http://localhost:3000.
+   ``` npm start ```
 4. Navigate to the `server` directory and run `npm install` to install the server's dependencies.
+   ``` cd server ```
+   ``` npm install ```
 5. Run `node server.js` to start the server.
+    ``` node server.js ```
 
+## Screenshots
+[Insert Screenshots]
+
+## Demo Video
 ## Contributing
 
 Contributions are welcome. Please make sure to update tests as appropriate.
@@ -54,6 +67,4 @@ Contributions are welcome. Please make sure to update tests as appropriate.
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## License
 
-This project is licensed under the MIT License.
