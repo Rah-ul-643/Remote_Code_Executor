@@ -87,7 +87,16 @@ To run the project locally, you need to have Node.js and npm installed.
     ```
 
 ## Screenshots
-[Insert Screenshots]
+![Screenshot 1](https://ibb.co/YfY6GYk)
+![Screenshot 2](https://ibb.co/rFxXSLf)
+![Screenshot 3](https://ibb.co/WnZLr13)
+![Screenshot 4](https://ibb.co/X2DXG09)
+![Screenshot 5](https://ibb.co/m59dmZb)
+![Screenshot 6](https://ibb.co/0G0dhj8)
+![Screenshot 7](https://ibb.co/6HxSpMN)
+![Screenshot 8](https://ibb.co/P9QXLKj)
+![Screenshot 9](https://ibb.co/vDyjsgp)
+
 
 ## Contributing
 
