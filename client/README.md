@@ -20,7 +20,7 @@ This project is a web-based application that allows users to write, compile, and
 ## Prerequisites
 - Docker
   ```
-       curl -fsSL https://get.docker.com -o get-docker.sh
+  curl -fsSL https://get.docker.com -o get-docker.sh
   ```
   ```
   sudo sh get-docker.sh
@@ -45,17 +45,31 @@ The server's source code is located in the `server` directory. The main entry po
 To run the project locally, you need to have Node.js and npm installed.
 
 1. Clone the repository.
-   ``` git clone https://github.com/Rah-ul-643/Remote_Code_Executor ```
-2. Navigate to the `client` directory and run `npm install` to install the client's dependencies.
-   ``` cd client ```
-   ``` npm install ```
-3. Run `npm start` to start the client. It will be available at http://localhost:3000.
-   ``` npm start ```
-4. Navigate to the `server` directory and run `npm install` to install the server's dependencies.
-   ``` cd server ```
-   ``` npm install ```
-5. Run `node server.js` to start the server.
-    ``` node server.js ```
+   ```
+   git clone https://github.com/Rah-ul-643/Remote_Code_Executor
+   ```
+3. Navigate to the `client` directory and run `npm install` to install the client's dependencies.
+   ```
+   cd client
+   ```
+   ```
+   npm install
+   ```
+5. Run `npm start` to start the client. It will be available at http://localhost:3000.
+   ```
+   npm start
+   ```
+7. Navigate to the `server` directory and run `npm install` to install the server's dependencies.
+   ```
+   cd server
+   ```
+   ```
+   npm install
+   ```
+9. Run `node server.js` to start the server.
+    ```
+   node server.js
+    ```
 
 ## Screenshots
 [Insert Screenshots]
