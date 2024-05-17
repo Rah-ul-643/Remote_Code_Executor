@@ -127,18 +127,6 @@ const MainControlModel = styled.p`
   color: #11ACAC;
 `;
 
-const MainMid = styled.div`
-  flex: 2;
-  background-color: #171821;
-  border-radius: 20px;
-  width: 90%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  gap: 10px;
-`;
 
 const MainMid1 = styled.div`
   flex: 2;
@@ -358,8 +346,6 @@ const CodeS = () => {
     resetToTemplate();
   };
 
-  const [fileContent, setFileContent] = useState('');
-
   const fileExtensions = {
     python: 'py',
     cpp: 'cpp',
@@ -369,12 +355,12 @@ const CodeS = () => {
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-    if(!file){
+    if (!file) {
       return;
     }
     const reader = new FileReader();
     const fileType = file.name.split('.').pop();
-  
+
 
     if (fileType !== fileExtensions[selectedLanguage]) {
       toast.error("File type not supported");
@@ -382,7 +368,6 @@ const CodeS = () => {
     }
 
     reader.onload = (e) => {
-      setFileContent(e.target.result);
       changeHandler(e.target.result, 'code');
     };
 
@@ -436,24 +421,24 @@ const CodeS = () => {
               </MainMidSecTop>
               <MainMidSecBottom>
 
-              <AceEditor
-  mode="python"
-  theme="twilight"
-  name="code"
-  onChange={(newValue) => changeHandler(newValue, 'code')}
-  editorProps={{ $blockScrolling: true, style: { fontFamily: 'Courier New', fontSize: 14, backgroundColor: 'red' } }}
-  width="100%"
-  height="95%"
-  value={formData.code}
-  fontSize={16}
-  setOptions={{
-    enableBasicAutocompletion: true,
-    enableLiveAutocompletion: true,
-    enableSnippets: true,
-    showLineNumbers: true,
-    tabSize: 2,
-  }}
-/>
+                <AceEditor
+                  mode="python"
+                  theme="twilight"
+                  name="code"
+                  onChange={(newValue) => changeHandler(newValue, 'code')}
+                  editorProps={{ $blockScrolling: true, style: { fontFamily: 'Courier New', fontSize: 14, backgroundColor: 'red' } }}
+                  width="100%"
+                  height="95%"
+                  value={formData.code}
+                  fontSize={16}
+                  setOptions={{
+                    enableBasicAutocompletion: true,
+                    enableLiveAutocompletion: true,
+                    enableSnippets: true,
+                    showLineNumbers: true,
+                    tabSize: 2,
+                  }}
+                />
 
               </MainMidSecBottom>
             </MainMidSec>

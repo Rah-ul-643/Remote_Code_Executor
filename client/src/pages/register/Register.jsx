@@ -1,49 +1,56 @@
 import "./register.css"
-import { sendOtp,register } from "../../services/authAPIs"
+import { sendOtp, register } from "../../services/authAPIs"
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
 export default function Register() {
 
-const [formData,setFormData] = useState({
-  name: "",
-  username: "",
-  email: "",
-  password: "",
-  password2: "",
-  otp: ""
-});
-const changeHandler = (e) => {
-  setFormData({
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    name: "",
+    username: "",
+    email: "",
+    password: "",
+    password2: "",
+    otp: ""
+  });
+  const changeHandler = (e) => {
+    setFormData({
       ...formData,
       [e.target.name]: e.target.value
+    }
+    );
   }
-  );
-}
 
-const sendOtpHandler = (e)=>{
-        e.preventDefault();
-        try{
-          if(formData.email === "") throw new Error("Email is required");
-          sendOtp(formData.email);
-          console.log("Sending OTP...");
-        }
-        catch(error){
-          console.log("Failed to send OTP", error);
-        }
-}
-const submitHandler = (e) => {
-  e.preventDefault();
-  console.log(formData);
+  const sendOtpHandler = (e) => {
+    e.preventDefault();
+    try {
+      if (formData.email === "") throw new Error("Email is required");
+      sendOtp(formData.email);
+      console.log("Sending OTP...");
+    }
+    catch (error) {
+      console.log("Failed to send OTP", error);
+      toast.error(error.message);
+    }
+  }
+  const submitHandler = (e) => {
+    e.preventDefault();
+    console.log(formData);
 
-  try{
+    try {
       register(formData);
+      navigate('/login');
+    }
+    catch (error) {
+      console.log("Error in signup", error);
+    }
   }
-  catch(error){
-      console.log("Error in signup",error);
-  }
-}
 
-    return (
-        <div className="register">
+  return (
+    <div className="register">
       <span className="registerTitle">Register</span>
       <form className="registerForm" onSubmit={submitHandler}>
         <label>Name</label>
@@ -56,17 +63,17 @@ const submitHandler = (e) => {
         <input className="registerInput" name="password" onChange={changeHandler} value={formData.password} type="password" placeholder="Enter your password..." />
         <label>Confirm Password</label>
         <input className="registerInput" name="password2" onChange={changeHandler} value={formData.password2} type="password" placeholder="Confirm your password..." />
-        
+
         <div>
           <label className="otpLabel">OTP</label>
           <input className="registerInput" name="otp" value={formData.otp} onChange={changeHandler} type="text" placeholder="Enter OTP..." />
           <button className="registerButton" onClick={sendOtpHandler}>Send OTP</button>
         </div>
-       
+
         <button className="registerButton" type="submit">Register</button>
 
       </form>
 
     </div>
-    )
+  )
 }
