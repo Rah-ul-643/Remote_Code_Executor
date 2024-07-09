@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import video from '../video/space.mp4';
 import { Link } from 'react-router-dom';
+import toast from "react-hot-toast";
 
 const Container = styled.div`
   display: flex;
@@ -71,14 +72,17 @@ height:100px;
 position:absolute;
 z-index:1;
 `;
-const token = window.localStorage.getItem("token");
 
-const logoutHandler = () => {
-  window.localStorage.removeItem("token");
-  window.location.reload();
-}
+const Front = ({setIsLoggedIn}) => {
 
-const Front = () => {
+  const token = window.localStorage.getItem("token");
+  
+  const logoutHandler = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    toast.success('Logged out successfully!');
+  }
+  
   return (
     <Container>
       <Nav>
@@ -106,7 +110,7 @@ const Front = () => {
       <InfoContainer>
         <Title>CodeNova</Title>
         <Desc>Master Algorithms, Unleash Creativity: Begin Your Coding Odyssey Here</Desc>
-        <Link to='/start'>    <ButtonContainer>Start Now</ButtonContainer></Link>
+        <Link to='/code'> <ButtonContainer>Start Now</ButtonContainer></Link>
       </InfoContainer>
     </Container>
   );

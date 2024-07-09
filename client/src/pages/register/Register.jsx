@@ -1,8 +1,11 @@
 import "./register.css"
-import { sendOtp, register } from "../../services/authAPIs"
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { apiConnector } from "../../services/apiConnector";
+import { endpoints } from "../../services/apis";
+
+
 
 export default function Register() {
 
@@ -11,11 +14,11 @@ export default function Register() {
   const [formData, setFormData] = useState({
     name: "",
     username: "",
-    email: "",
     password: "",
     password2: "",
-    otp: ""
+
   });
+
   const changeHandler = (e) => {
     setFormData({
       ...formData,
@@ -24,30 +27,49 @@ export default function Register() {
     );
   }
 
-  const sendOtpHandler = (e) => {
+ 
+  const submitHandler = async (e) => {
     e.preventDefault();
-    try {
-      if (formData.email === "") throw new Error("Email is required");
-      sendOtp(formData.email);
-      console.log("Sending OTP...");
-    }
-    catch (error) {
-      console.log("Failed to send OTP", error);
-      toast.error(error.message);
-    }
-  }
-  const submitHandler = (e) => {
-    e.preventDefault();
-    console.log(formData);
 
-    try {
-      register(formData);
-      navigate('/login');
+    if (formData.password === formData.password2) {
+      const toastId = toast.loading('Registering User...');
+
+      try {
+        const response = await apiConnector("POST", endpoints.SIGNUP_API, formData);
+
+        console.log(response.data);
+
+        if (response.data.success) {                   // api sends an object {success,message}
+          toast.success(response.data.message);
+          navigate('/login');
+
+        } else {
+          toast.error(response.data.message);
+        }
+
+
+
+      } catch (error) {
+        console.log("signup Error", error);
+        toast.error(`Oops! Server Issue :( \n Lemme fix it in a minute...`);
+
+      }
+      finally {
+        setFormData({
+          name: "",
+          username: "",
+          password: "",
+          password2: "",
+      
+        })
+        toast.dismiss(toastId);
+      }
     }
-    catch (error) {
-      console.log("Error in signup", error);
+
+    else {
+      toast.error("Password does not match");
     }
-  }
+  };
 
   return (
     <div className="register">
@@ -57,18 +79,10 @@ export default function Register() {
         <input className="registerInput" name="name" onChange={changeHandler} value={formData.name} placeholder="Enter name..." type="text" />
         <label>Username</label>
         <input className="registerInput" name="username" onChange={changeHandler} value={formData.username} type="text" placeholder="Enter your username..." />
-        <label>Email</label>
-        <input className="registerInput" name="email" onChange={changeHandler} value={formData.email} type="text" placeholder="Enter your email..." />
         <label>Password</label>
         <input className="registerInput" name="password" onChange={changeHandler} value={formData.password} type="password" placeholder="Enter your password..." />
         <label>Confirm Password</label>
         <input className="registerInput" name="password2" onChange={changeHandler} value={formData.password2} type="password" placeholder="Confirm your password..." />
-
-        <div>
-          <label className="otpLabel">OTP</label>
-          <input className="registerInput" name="otp" value={formData.otp} onChange={changeHandler} type="text" placeholder="Enter OTP..." />
-          <button className="registerButton" onClick={sendOtpHandler}>Send OTP</button>
-        </div>
 
         <button className="registerButton" type="submit">Register</button>
 
