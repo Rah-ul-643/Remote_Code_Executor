@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './ChatBox.css'; // Import your CSS file for styling
+import './css/ChatBox.css'; // Import your CSS file for styling
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
 

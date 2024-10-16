@@ -9,7 +9,7 @@ import { mobile } from "../responsive"
 import CodeEditor from "../components/CodeEditor";
 import EditorUtilityBar from "../components/EditorUtilityBar";
 import CollabCoding from "../components/CollabCoding";
-import ChatBox from '../components/ChatBot/ChatBox';
+import ChatBox from '../components/ChatBox';
 
 const SOCKET_SERVER_URL = process.env.REACT_APP_SOCKET_SERVER_URL;
 
