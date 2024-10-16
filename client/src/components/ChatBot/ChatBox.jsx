@@ -37,7 +37,7 @@ const ChatBox = () => {
         e.preventDefault();
 
         const prompt = message;
-        setMessage(''); 
+        setMessage('');
         setIsLoading(true);
 
         try {
@@ -76,70 +76,68 @@ const ChatBox = () => {
 
     return (
         <div className="chat-container">
-            {isOpen &&
-                <div className="chat-box">
-                    <div className='top-bar'>
-                        <button className='btn top-bar-btn' onClick={clearChatHandler}>Clear Chat</button>
-                        <button className='btn top-bar-btn' onClick={() => setIsOpen(false)}>Close</button>
-                    </div>
-                    
-                    <div className='Conversation-box'>
-                        {
-                            history.map((entry, index) => (
-                                <div key={index} className='chat-pair'>
-                                    <p className="chat-msg prompt">
-                                        {entry.prompt}
-                                    </p>
-                                    <p className="chat-msg response">
-                                        {formatResponse(entry.response)}
-                                    </p>
-                                </div>
-                            ))
-                        }
+            <div className={`chat-box ${isOpen ? 'open' : '' } `}>
+                <div className='top-bar'>
+                    <button className='btn top-bar-btn' onClick={clearChatHandler}>Clear Chat</button>
+                    <button className='btn top-bar-btn' onClick={() => setIsOpen(false)}>Close</button>
+                </div>
 
-                        { !history.length && !isLoading &&
-                            <div className='empty-chats'>
-                                <div className='text-container'>
-                                    <h2>Stuck? </h2>
-                                    <h2>Your AI buddy is here to help!</h2>
-                                </div>
-                                <p>Powered by <span>Gemini AI</span></p>
+                <div className='Conversation-box'>
+                    {
+                        history.map((entry, index) => (
+                            <div key={index} className='chat-pair'>
+                                <p className="chat-msg prompt">
+                                    {entry.prompt}
+                                </p>
+                                <p className="chat-msg response">
+                                    {formatResponse(entry.response)}
+                                </p>
                             </div>
-                        }
-                        <div ref={bottomRef}></div>
+                        ))
+                    }
 
-
-                        { isLoading &&
-                            <div className='loading' >
-                                <img src="loading.gif" alt="" />
+                    {!history.length && !isLoading &&
+                        <div className='empty-chats'>
+                            <div className='text-container'>
+                                <h2>Stuck? </h2>
+                                <h2>Your AI buddy is here to help!</h2>
                             </div>
-                        }
+                            <p>Powered by <span>Gemini AI</span></p>
+                        </div>
+                    }
+                    <div ref={bottomRef}></div>
 
-                    </div>
 
-                    <div className='input-bar'>
-                        <input
-                            type="text"
-                            className='inp'
-                            placeholder="Type your query..."
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            style={{
-                                padding: '10px',
-                                fontSize: '16px',
-                                borderRadius: '5px',
-                                border: '1px solid #ccc',
-                                width: '80%',
-                                boxSizing: 'border-box',
-                                outline: 'none'
-                            }}
-                        />
-                        <button className='btn input-btn' onClick={sendPrompt} >Ask AI</button>
-                    </div>
+                    {isLoading &&
+                        <div className='loading' >
+                            <img src="loading.gif" alt="" />
+                        </div>
+                    }
 
                 </div>
-            }
+
+                <div className='input-bar'>
+                    <input
+                        type="text"
+                        className='inp'
+                        placeholder="Type your query..."
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        style={{
+                            padding: '10px',
+                            fontSize: '16px',
+                            borderRadius: '5px',
+                            border: '1px solid #ccc',
+                            width: '80%',
+                            boxSizing: 'border-box',
+                            outline: 'none'
+                        }}
+                    />
+                    <button className='btn input-btn' onClick={sendPrompt} >Ask AI</button>
+                </div>
+
+            </div>
 
             <div onClick={toggleChatBox}>
                 <img className='chat-icon' src="bot.gif" alt="Gemini AI" title='Gemini AI' />
