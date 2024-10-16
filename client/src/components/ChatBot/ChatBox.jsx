@@ -6,13 +6,12 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-const chat = model.startChat();
-
 const ChatBox = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [history, setHistory] = useState([]); // For storing previous messages
+    const [chat, setChat] = useState(model.startChat());
 
     const bottomRef = useRef(null);
 
@@ -37,24 +36,21 @@ const ChatBox = () => {
     const sendPrompt = async (e) => {
         e.preventDefault();
 
-        setMessage(''); 
         const prompt = message;
+        setMessage(''); 
         setIsLoading(true);
 
         try {
             const result = await chat.sendMessage(prompt);
-            console.log(result);
-
             const response = result.response.text();
 
             if (response) {
-                // Update the history with the new message and response
                 setHistory([...history, { prompt, response }]);
             }
-            console.log(history);
 
         } catch (error) {
             console.error("Error sending prompt:", error);
+            setChat(model.startChat()); // In case of error, starting a new chat.
         }
         finally {
             setIsLoading(false);
@@ -81,7 +77,6 @@ const ChatBox = () => {
     return (
         <div className="chat-container">
             {isOpen &&
-
                 <div className="chat-box">
                     <div className='top-bar'>
                         <button className='btn top-bar-btn' onClick={clearChatHandler}>Clear Chat</button>
@@ -102,7 +97,7 @@ const ChatBox = () => {
                             ))
                         }
 
-                        {isOpen && !history.length && !isLoading &&
+                        { !history.length && !isLoading &&
                             <div className='empty-chats'>
                                 <div className='text-container'>
                                     <h2>Stuck? </h2>
@@ -113,15 +108,16 @@ const ChatBox = () => {
                         }
                         <div ref={bottomRef}></div>
 
+
+                        { isLoading &&
+                            <div className='loading' >
+                                <img src="loading.gif" alt="" />
+                            </div>
+                        }
+
                     </div>
 
-                    {  isLoading &&
-                        <div className='loading' >
-                            <img src="loading.gif" alt="" />
-                        </div>
-                    }
-
-                    <div className='send-msg'>
+                    <div className='input-bar'>
                         <input
                             type="text"
                             className='inp'
@@ -148,6 +144,7 @@ const ChatBox = () => {
             <div onClick={toggleChatBox}>
                 <img className='chat-icon' src="bot.gif" alt="Gemini AI" title='Gemini AI' />
             </div>
+
         </div>
     );
 };

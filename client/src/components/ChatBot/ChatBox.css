@@ -37,7 +37,6 @@
   box-shadow: 0 0 20px rgb(132, 132, 132);
 }
 
-
 .Conversation-box {
   height: 90%;
   overflow-y: auto;
@@ -45,7 +44,6 @@
 
 .Conversation-box::-webkit-scrollbar {
   display: none;
-  /* Hide scrollbar for WebKit browsers */
 }
 
 .empty-chats {
@@ -78,10 +76,9 @@
   padding: 10px;
 }
 
-.send-msg {
+.input-bar {
   width: 100%;
   display: flex;
-  ;
 }
 
 .btn {
@@ -142,7 +139,6 @@
   background-color: rgb(175, 9, 170);
   align-self: flex-end;
   font-size: 1.1rem;
-
 }
 
 .response {
