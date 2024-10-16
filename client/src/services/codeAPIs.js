@@ -2,13 +2,11 @@ import toast from "react-hot-toast";
 import { endpoints } from "./apis";
 import { apiConnector } from "./apiConnector";
 
-const {
-    COMPILE_API
-} = endpoints
+const { COMPILE_API } = endpoints
 
-export const compileCode = async (code,input,language) => {
+export const compileCode = async (code, input, language) => {
     const toastId = toast.loading("Compiling...");
-    let output="";
+    let output = "";
     try {
         const response = await apiConnector("POST", COMPILE_API, {
             code,
@@ -27,12 +25,27 @@ export const compileCode = async (code,input,language) => {
     }
     catch (error) {
         console.log("COMPILE API FAILED:", error);
-        toast.error("Failed to compile");
-        output= error.response.data;
+
+        if (error.response.status === 400) {
+            output = error.response.data;
+            toast.error("Compilation Error!");
+        }
+        else if (error.response.status === 401) {
+            window.localStorage.removeItem('token');
+            window.location.reload();
+        }
+        else if (error.response.status === 405) {
+            toast.error(error.response.data);
+        }
+        else {
+            toast.error("Server Error!");
+        }
+
+
     }
-    finally{
+    finally {
         toast.dismiss(toastId);
     }
-    
+
     return output;
 }

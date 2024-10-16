@@ -1,30 +1,30 @@
-const bcrypt= require('bcrypt');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const users = require('../models/users');
-const secretKey = process.env.JWT_SECRET_KEY; 
+const secretKey = process.env.JWT_SECRET_KEY;
 
 const loginController = async (req, res) => {
     const { username, password } = req.body;
+
     try {
 
-        const user = await users.findOne({username:username});
-        if (user) {            
-            if (await bcrypt.compare(password, user.password) ){
+        const user = await users.findOne({ username: username });
+        if (user) {
+            if (await bcrypt.compare(password, user.password)) {
                 console.log("authenticted");
-                const token = jwt.sign({ username }, "secretKey", { expiresIn: '1h' });
+                const token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
                 res.cookie('token', token,
                     {
                         httpOnly: true,
-                        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'strict',
-                        maxAge: 60 * 60 * 1000,
-                        secure: process.env.NODE_ENV === 'production',
-                        path: '/',
+                        maxAge: 2 * 24 * 60 * 60 * 1000, // 2 days
+                        secure: true, // Use `secure: true` in production
+                        sameSite: 'None',  // Allow cross-origin
                     }
                 );
                 res.json({ token: token, success: true, message: "Logged in successfully" });
             }
-            else 
+            else
                 res.json({ success: false, message: "Incorrect Password" });
         }
 
@@ -41,9 +41,9 @@ const registerController = async (req, res) => {
     console.log("registration api hit");
     const { name, username, password } = req.body;
     try {
-        const user = await users.findOne({username:username});
+        const user = await users.findOne({ username: username });
         if (!user) {
-            const encryptedPassword=await bcrypt.hash(password,10);
+            const encryptedPassword = await bcrypt.hash(password, 10);
 
             const newUser = new users({ name, username, password: encryptedPassword });
             await newUser.save();
@@ -63,4 +63,4 @@ const registerController = async (req, res) => {
 
 }
 
-module.exports = {loginController, registerController};
+module.exports = { loginController, registerController };

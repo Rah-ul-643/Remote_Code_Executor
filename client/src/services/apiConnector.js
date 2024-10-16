@@ -2,12 +2,13 @@ import axios from "axios";
 
 export const axiosInstance = axios.create({});
 
-export const apiConnector = (method, url, bodyData, headers, params, token) => {
+export const apiConnector = (method, url, bodyData, headers, params) => {
     return axiosInstance({
         method: `${method}`,
         url: `${url}`,
         data: bodyData ? bodyData : null,
-        headers: headers ? { ...headers, Authorization: `Bearer ${token}` } : { Authorization: `Bearer ${token}` },
+        headers: headers ? { ...headers, 'Content-Type': 'application/json', } : { 'Content-Type': 'application/json', },
         params: params ? params : null,
+        withCredentials: true,
     });
 }

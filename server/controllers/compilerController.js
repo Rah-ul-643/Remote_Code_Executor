@@ -42,7 +42,7 @@ const compileCode= (req,res)=>{
     }
 
     else{
-        res.json("The file contains malicious code");
+        res.status(405).json("The file contains malicious code");
     }
 
     

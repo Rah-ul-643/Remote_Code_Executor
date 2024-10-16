@@ -5,4 +5,5 @@ export const endpoints = {
     SIGNUP_API: `${BASE_URL}auth/register`,
     LOGIN_API: `${BASE_URL}auth/login`,
     COMPILE_API: `${BASE_URL}code/compile`,
+    VALIDATE_API: `${BASE_URL}code/validate`
 };
