@@ -1,6 +1,7 @@
 # Remote Code Executor
 
 The Remote Code Executor is a web-based application designed to let users write, compile, and execute code in multiple programming languages directly from their browsers. This tool provides an interactive, efficient, and accessible platform for coding, testing, and collaboration, with AI assistance for guidance.
+
 ## Features
 
 - **Multi-Language Support**:  
@@ -22,17 +23,9 @@ The Remote Code Executor is a web-based application designed to let users write,
 ## Demo
 [Insert Demo Link]
 
-## Authors
+## Author
 - [Rahul](https://github.com/Rah-ul-643)
-- [Ankesh](https://github.com/Ankesh2004)
-- [Harshdeep](https://github.com/Harshjerry) 
 
-## Features
-
-- **Implemented Code Santization**
-- For each code run request, a separate Docker container is created which limits the interference with the host machine.
-- The parameters like Time taken to run the code and Total memory used have been limited, allowing efficient management of resources.
-- The code execution happens asynchronously, allowing the server to handle multiple requests at the same time.
 
 ## Prerequisites
 - Docker
