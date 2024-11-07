@@ -25,7 +25,7 @@ const loginController = async (req, res) => {
                 res.json({ token: token, success: true, message: "Logged in successfully" });
             }
             else
-                res.json({ success: false, message: "Incorrect Password" });
+                res.send("Incorrect Password");
         }
 
         else res.json({ success: false, message: "User does not exist" });

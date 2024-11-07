@@ -12,6 +12,8 @@ const compileCode= (req,res)=>{
     let input= req.body.input || "";
 
     console.log(language);
+    console.log(code);
+    
 
     if (validate(code,language)){
 

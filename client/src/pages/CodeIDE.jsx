@@ -283,18 +283,20 @@ const CodeIDE = () => {
     if (!socket) return;
 
     socket.on('set-code', (code) => {
+      console.log(code);
       const updatedFiles = formData.files.map((file) =>
         file.id === 1 ? { ...file, code } : file
       );
       changeHandler('files', updatedFiles);
     });
-  }, [socket, formData.files]);
+  },[socket]);
 
   const changeHandler = (field, newValue) => {
     setFormData((prevState) => ({ ...prevState, [field]: newValue }));
   };
 
-  const updateCode = (code) => {
+  const updateCode = (_unused,code) => {
+
     const updatedFiles = formData.files.map((file) =>
       file.id === currFile ? { ...file, code } : file
     );
@@ -381,6 +383,7 @@ const CodeIDE = () => {
                 value: formData.files[currentFileIndex].code,
               }}
               changeHandler={updateCode}
+              field="code"
             />
           </TextIOContainer>
         )}
@@ -431,7 +434,7 @@ const CodeIDE = () => {
               />
             </TextIOContainer>
           </RightSecInputContainer>
-
+            
           <RightSecInputContainer>
             <SectionTitleContainer>
               <MainTab>

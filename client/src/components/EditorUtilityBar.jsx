@@ -178,6 +178,7 @@ const EditorUtilityBar = ({ formData, currFile, changeHandler }) => {
         e.preventDefault();
         try {
             console.log("Compiling code...");
+            console.log(formData.files[index]);          
             const compiledOutput = await compileCode(formData.files[index].code, formData.input, formData.files[index].language);
             changeHandler('output', compiledOutput);
         } catch (error) {
