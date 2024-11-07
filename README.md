@@ -1,6 +1,23 @@
 # Remote Code Executor
 
-This project is a web-based application that allows users to write, compile, and execute code in various programming languages. It also includes an AI bot assistant powered by Gemini AI.
+The Remote Code Executor is a web-based application designed to let users write, compile, and execute code in multiple programming languages directly from their browsers. This tool provides an interactive, efficient, and accessible platform for coding, testing, and collaboration, with AI assistance for guidance.
+## Features
+
+- **Multi-Language Support**:  
+  Supports various programming languages, including Python, JavaScript, C++, and Java. Each language runs in an isolated environment, ensuring security and reliability in execution.
+
+- **Multi-File System**:  
+  Users can create, manage, and execute projects that include multiple files, allowing for complex, multi-file applications to be developed within the platform. This feature is ideal for building modular codebases or applications with interdependent files.
+
+- **Security**:  
+  The platform prioritizes security by using sandboxing and containerization to isolate code execution environments, reducing the risks associated with running untrusted code. Additionally, rate limiting, input validation, and logging mechanisms are implemented to prevent misuse and enhance safety.
+
+- **Collaborative Coding**:  
+  Real-time collaboration enables multiple users to work on code together seamlessly, with features like shared cursors, live updates, and version history. This makes it easier for teams to work together, learn, and debug efficiently.
+
+- **AI Assistant**:  
+  An integrated chatbot powered by **Gemini AI** provides on-demand assistance with coding, debugging, and general programming questions. The AI assistant offers contextual help to improve productivity and guide users through coding challenges.
+
 
 ## Demo
 [Insert Demo Link]
