@@ -283,7 +283,7 @@ const CodeIDE = () => {
     if (!socket) return;
 
     socket.on('set-code', (code) => {
-      console.log(code);
+  
       const updatedFiles = formData.files.map((file) =>
         file.id === 1 ? { ...file, code } : file
       );
