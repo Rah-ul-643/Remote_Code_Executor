@@ -21,7 +21,7 @@ This Remote Code Executor is a web-based application designed to let users write
 
 
 ## Demo
-[Insert Demo Link]
+- [Demo Video](https://drive.google.com/file/d/1LFYfSAr9pb31Lal4qivCkBhA45W8OH_y/view?usp=sharing)
 
 ## Author
 - [Rahul](https://github.com/Rah-ul-643)
@@ -96,16 +96,6 @@ To run the project locally, you need to have Node.js and npm installed.
    node server.js
     ```
 
-## Screenshots
-![Screenshot 1](https://ibb.co/YfY6GYk)
-![Screenshot 2](https://ibb.co/rFxXSLf)
-![Screenshot 3](https://ibb.co/WnZLr13)
-![Screenshot 4](https://ibb.co/X2DXG09)
-![Screenshot 5](https://ibb.co/m59dmZb)
-![Screenshot 6](https://ibb.co/0G0dhj8)
-![Screenshot 7](https://ibb.co/6HxSpMN)
-![Screenshot 8](https://ibb.co/P9QXLKj)
-![Screenshot 9](https://ibb.co/vDyjsgp)
 
 
 ## Contributing
